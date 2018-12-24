@@ -14,19 +14,19 @@ class Scoreboard extends Component {
   render() {
     return (
       <React.Fragment>
+        <div className="page-header">
+          <h1>
+            Kikker Compo <small>Gateway Gaming</small>
+          </h1>
+        </div>
         <div>
-          <div className="btn-group" role="group" aria-label="...">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={this.handleShowAddCompetitor}
-            >
-              <i className="glyphicon glyphicon-plus" />
-            </button>
-            <button type="button" className="btn btn-secondary">
-              <i className="glyphicon glyphicon-trash" />
-            </button>
-          </div>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={this.handleShowAddCompetitor}
+          >
+            <i className="glyphicon glyphicon-plus" /> Nieuwe deelnemer
+          </button>
         </div>
         <div
           className="well"
@@ -35,7 +35,7 @@ class Scoreboard extends Component {
             marginTop: 10
           }}
         >
-          <form className="form-inline">
+          <form className="form" onSubmit={this.handleAddCompetitor}>
             <div className="form-group">
               <label htmlFor="inputName">Naam</label>
               <input
@@ -48,11 +48,7 @@ class Scoreboard extends Component {
                 value={this.state.newCompetitorName}
               />
             </div>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={this.handleAddCompetitor}
-            >
+            <button type="submit" className="btn btn-primary">
               Toevoegen
             </button>
           </form>
@@ -71,7 +67,7 @@ class Scoreboard extends Component {
       showAddCompetitor: !prevState.showAddCompetitor
     }));
   };
-  handleAddCompetitor = () => {
+  handleAddCompetitor = e => {
     if (
       this.state.newCompetitorName.trim() !== "" &&
       !this.state.competitors.some(
@@ -91,7 +87,7 @@ class Scoreboard extends Component {
       }));
     }
     this.setState({ newCompetitorName: "" });
-    console.log(this.state.competitors);
+    e.preventDefault();
   };
 }
 

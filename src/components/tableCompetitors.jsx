@@ -7,7 +7,7 @@ class TableCompetitors extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (this.props != nextProps) {
+    if (this.props !== nextProps) {
       this.setState({
         competitors: nextProps.competitors
       });
@@ -33,7 +33,6 @@ class TableCompetitors extends Component {
     );
   }
   comparePoints(a, b) {
-    // Use toUpperCase() to ignore character casing
     const userPointsA = a.points;
     const userPointsB = b.points;
 
