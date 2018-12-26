@@ -62,6 +62,10 @@ class App extends Component {
             this.handleDeleteLogCompetitor(name, id)
           }
           onDeleteCompetitor={name => this.handleDeleteCompetitor(name)}
+          onUpdateCompetitorName={name => this.handleUpdateCompetitorName(name)}
+          onAddLogCompetitor={(name, amount, reason) =>
+            this.handleAddLogCompetitor(name, amount, reason)
+          }
         />
       </React.Fragment>
     );
@@ -92,19 +96,30 @@ class App extends Component {
     }
   };
   handleDeleteLogCompetitor = (name, id) => {
-    console.log(
-      name,
-      id,
-      this.state.competitors.find(el => el.name === name),
-      this.state.competitors
-        .find(el => el.name === name)
-        .find(el => el.logs.id === id)
-    );
+    var comps = this.state.competitors;
+    comps.forEach(e => {
+      if (e.name === name) {
+        console.log("in");
+        e.logs = e.logs.filter(el => el.id !== id);
+      }
+    });
+
+    this.setState(prevState => ({
+      competitors: comps
+    }));
+    console.log(comps);
   };
   handleDeleteCompetitor = name => {
     this.setState(prevState => ({
       competitors: prevState.competitors.filter(el => el.name !== name)
     }));
+  };
+  handleUpdateCompetitorName = name => {
+    /* PAS NAAM AAN
+    Zodat DELETE ook werkt als de naam gewijzigd is*/
+  };
+  handleAddLogCompetitor = (name, amount, reason) => {
+    console.log(name, amount, reason);
   };
 }
 

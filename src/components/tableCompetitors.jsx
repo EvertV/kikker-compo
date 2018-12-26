@@ -35,7 +35,13 @@ class TableCompetitors extends Component {
                 onDeleteLog={(name, id) =>
                   this.props.onDeleteLogCompetitor(name, id)
                 }
+                onAddLog={(name, amount, reason) =>
+                  this.props.onAddLogCompetitor(name, amount, reason)
+                }
                 onDeleteCompetitor={name => this.props.onDeleteCompetitor(name)}
+                onUpdateCompetitorName={name =>
+                  this.props.onUpdateCompetitorName(name)
+                }
               />
             ))}
           </tbody>

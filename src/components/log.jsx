@@ -17,13 +17,17 @@ class Log extends Component {
       </span>
     );
     return (
-      <div className="list-group">
+      <div className="list-group" style={{ maxWidth: 400 }}>
         <div className="list-group-item">
           {/*<span className="badge">{this.state.amount}</span>*/}
           <h4 className="list-group-item-heading">
             {this.state.reason}&nbsp;
-            <span className="label label-primary">{this.state.amount}</span>
+            <span className="pull-right">
+              <small>Punten:&nbsp;</small>
+              <span className="label label-info">{this.state.amount}</span>
+            </span>
           </h4>
+          <br />
           <p className="list-group-item-text">
             {date}
             <button

@@ -7,11 +7,19 @@ class Competitor extends Component {
     logs: this.props.logs,
     showEditCompetitor: false,
     showLogCompetitor: false,
-    entryReason: "",
-    entryPoints: 0,
     isActiveRow: false,
-    newName: this.props.name
+    newName: this.props.name,
+    newLogReason: "",
+    newLogAmount: 0
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps) {
+      this.setState({
+        logs: nextProps.logs
+      });
+    }
+  }
 
   render() {
     return (
@@ -93,40 +101,37 @@ class Competitor extends Component {
               <small>Overzicht</small>
             </h4>
             <h5>Nieuwe log</h5>
-            <form
-              className="form-inline"
-              onSubmit={this.onAddLogCompetitorHelper}
-            >
+            <form className="form-inline" onSubmit={this.onAddLogHelper}>
               <div className="form-group input-group">
-                <label htmlFor="inputEntryPoints" className="sr-only">
-                  Aantal
-                </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="inputEntryPoints"
-                  placeholder="Aantal"
-                  autoComplete="off"
-                  onChange={this.handleEntryPointsChange}
-                />
-                <span className="input-group-btn" />
-              </div>
-              <div className="input-group form-group">
-                <label htmlFor="inputEntryPoints" className="sr-only">
+                <label htmlFor="inputNewLogReason" className="sr-only">
                   Reden
                 </label>
                 <input
                   type="text"
                   className="form-control"
-                  id="inputEntryReason"
+                  id="inputNewLogReason"
                   placeholder="Reden"
                   autoComplete="off"
-                  onChange={this.handleEntryReasonChange}
-                  value={this.state.entryReason}
+                  onChange={this.handleNewLogReasonChange}
+                />
+                <span className="input-group-btn" />
+              </div>
+              <div className="input-group form-group">
+                <label htmlFor="inputNewLogAmount" className="sr-only">
+                  Aantal
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="inputNewLogAmount"
+                  placeholder="Aantal"
+                  autoComplete="off"
+                  onChange={this.handleNewLogAmountChange}
                 />
                 <span className="input-group-btn">
                   <button type="submit" className="btn btn-success">
                     <i className="glyphicon glyphicon-plus" />
+                    &nbsp;Toevoegen
                   </button>
                 </span>
               </div>
@@ -152,10 +157,27 @@ class Competitor extends Component {
   handleEditCompetitorNameChange = e => {
     this.setState({ newName: e.target.value });
   };
+  handleNewLogAmountChange = e => {
+    this.setState({ newLogAmount: e.target.value });
+  };
+  handleNewLogReasonChange = e => {
+    this.setState({ newLogReason: e.target.value });
+  };
 
-  handleEditCompetitorName = e => {
+  onAddLogHelper = e => {
+    e.preventDefault();
+    this.props.onAddLog(
+      this.state.name,
+      this.state.newLogAmount,
+      this.state.newLogReason
+    );
+    console.log(this.state.newLogReason);
+  };
+
+  onUpdateCompetitorName = e => {
     e.preventDefault();
     this.setState(prevState => ({ name: prevState.newName }));
+    this.props.onUpdateCompetitorName(this.state.newName);
     this.handleShowEditCompetitor();
   };
 
@@ -164,9 +186,9 @@ class Competitor extends Component {
     this.props.onDeleteCompetitor(this.state.name);
   };
 
-  handleEntryReasonChange = e => {
+  handleNewLogReasonChange = e => {
     e.preventDefault();
-    this.setState({ entryReason: e.target.value });
+    this.setState({ NewLogReason: e.target.value });
   };
 
   handleShowEditCompetitor = () => {
