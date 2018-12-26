@@ -87,6 +87,7 @@ class App extends Component {
               {
                 date: moment(),
                 reason: "Nieuwe kikker",
+                id: name + "&&" + moment().millisecond(),
                 amount: 1
               }
             ]
@@ -99,7 +100,6 @@ class App extends Component {
     var comps = this.state.competitors;
     comps.forEach(e => {
       if (e.name === name) {
-        console.log("in");
         e.logs = e.logs.filter(el => el.id !== id);
       }
     });
@@ -107,7 +107,6 @@ class App extends Component {
     this.setState(prevState => ({
       competitors: comps
     }));
-    console.log(comps);
   };
   handleDeleteCompetitor = name => {
     this.setState(prevState => ({
@@ -119,7 +118,24 @@ class App extends Component {
     Zodat DELETE ook werkt als de naam gewijzigd is*/
   };
   handleAddLogCompetitor = (name, amount, reason) => {
-    console.log(name, amount, reason);
+    var competitors = this.state.competitors;
+    competitors.forEach(e => {
+      if (e.name === name) {
+        e.logs = [
+          ...e.logs,
+          {
+            date: moment(),
+            reason: reason,
+            id: name + "&&" + moment().millisecond(),
+            amount: parseInt(amount)
+          }
+        ];
+      }
+    });
+
+    this.setState(prevState => ({
+      competitors: competitors
+    }));
   };
 }
 

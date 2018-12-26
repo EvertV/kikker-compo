@@ -9,8 +9,8 @@ class Competitor extends Component {
     showLogCompetitor: false,
     isActiveRow: false,
     newName: this.props.name,
-    newLogReason: "",
-    newLogAmount: 0
+    newLogAmount: 0,
+    newLogReason: ""
   };
 
   componentWillReceiveProps(nextProps) {
@@ -109,12 +109,12 @@ class Competitor extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  id="inputNewLogReason"
-                  placeholder="Reden"
+                  id="inputName"
+                  placeholder="Geef een reden"
                   autoComplete="off"
+                  value={this.state.newLogReason}
                   onChange={this.handleNewLogReasonChange}
                 />
-                <span className="input-group-btn" />
               </div>
               <div className="input-group form-group">
                 <label htmlFor="inputNewLogAmount" className="sr-only">
@@ -126,6 +126,7 @@ class Competitor extends Component {
                   id="inputNewLogAmount"
                   placeholder="Aantal"
                   autoComplete="off"
+                  value={this.state.newLogAmount}
                   onChange={this.handleNewLogAmountChange}
                 />
                 <span className="input-group-btn">
@@ -171,7 +172,6 @@ class Competitor extends Component {
       this.state.newLogAmount,
       this.state.newLogReason
     );
-    console.log(this.state.newLogReason);
   };
 
   onUpdateCompetitorName = e => {
@@ -184,11 +184,6 @@ class Competitor extends Component {
   handleDeleteCompetitor = e => {
     e.preventDefault();
     this.props.onDeleteCompetitor(this.state.name);
-  };
-
-  handleNewLogReasonChange = e => {
-    e.preventDefault();
-    this.setState({ NewLogReason: e.target.value });
   };
 
   handleShowEditCompetitor = () => {
