@@ -96,27 +96,22 @@ class Competitor extends Component {
               paddingBottom: 15
             }}
           >
-            <h4>
-              Kikker {this.state.name}&nbsp;
-              <small>Overzicht</small>
-            </h4>
-            <h5>Nieuwe log</h5>
-            <form className="form-inline" onSubmit={this.onAddLogHelper}>
-              <div className="form-group input-group">
+            <br />
+            <form onSubmit={this.onAddLogHelper}>
+              <div className="input-group">
                 <label htmlFor="inputNewLogReason" className="sr-only">
                   Reden
                 </label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-control new-log-reason-input"
                   id="inputName"
                   placeholder="Geef een reden"
                   autoComplete="off"
                   value={this.state.newLogReason}
                   onChange={this.handleNewLogReasonChange}
                 />
-              </div>
-              <div className="input-group form-group">
+                <span className="input-group-btn" />
                 <label htmlFor="inputNewLogAmount" className="sr-only">
                   Aantal
                 </label>
@@ -126,9 +121,11 @@ class Competitor extends Component {
                   id="inputNewLogAmount"
                   placeholder="Aantal"
                   autoComplete="off"
+                  style={{ maxWidth: 65 }}
                   value={this.state.newLogAmount}
                   onChange={this.handleNewLogAmountChange}
                 />
+                <span className="input-group-btn" />
                 <span className="input-group-btn">
                   <button type="submit" className="btn btn-success">
                     <i className="glyphicon glyphicon-plus" />
@@ -137,22 +134,36 @@ class Competitor extends Component {
                 </span>
               </div>
             </form>
-            <h5>Historiek</h5>
-            {this.state.logs.map(log => (
-              <Log
-                key={log.id}
-                id={log.id}
-                date={log.date}
-                amount={log.amount}
-                reason={log.reason}
-                name={this.state.name}
-                onDeleteLog={(name, id) => this.props.onDeleteLog(name, id)}
-              />
-            ))}
+            <hr />
+            <div className="list-group" style={{ maxWidth: 400 }}>
+              {this.state.logs.sort(this.compareDate).map(log => (
+                <Log
+                  key={log.id}
+                  id={log.id}
+                  date={log.date}
+                  amount={log.amount}
+                  reason={log.reason}
+                  name={this.state.name}
+                  onDeleteLog={(name, id) => this.props.onDeleteLog(name, id)}
+                />
+              ))}
+            </div>
           </td>
         </tr>
       </React.Fragment>
     );
+  }
+  compareDate(a, b) {
+    const userDateA = a.date;
+    const userDateB = b.date;
+
+    let comparison = 0;
+    if (userDateA < userDateB) {
+      comparison = 1;
+    } else if (userDateA > userDateB) {
+      comparison = -1;
+    }
+    return comparison;
   }
 
   handleEditCompetitorNameChange = e => {

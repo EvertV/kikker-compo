@@ -1,3 +1,9 @@
 button:focus {
   outline: 0 !important;
 }
+.input-group-btn {
+  width: 0;
+}
+.new-log-reason-input {
+  width: 100% !important;
+}

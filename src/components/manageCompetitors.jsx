@@ -9,7 +9,7 @@ class ManageCompetitors extends Component {
   render() {
     return (
       <React.Fragment>
-        <div>
+        <div className="pull-right">
           <button
             type="button"
             className={this.getShowAddCompetitorClasses()}
@@ -20,15 +20,15 @@ class ManageCompetitors extends Component {
         </div>
         <div
           style={{
-            display: this.state.showAddCompetitor ? "block" : "none",
-            marginTop: 10
+            display: this.state.showAddCompetitor ? "block" : "none"
           }}
         >
           <form
             className="form-inline well"
-            style={{ display: "inline-block" }}
+            style={{ display: "inline-block", marginTop: 10 }}
             onSubmit={this.onAddCompetitorHelper}
           >
+            <h4>Nieuwe deelnemer toevoegen</h4>
             <div className="form-group">
               <label htmlFor="inputName" className="sr-only">
                 Naam
@@ -38,7 +38,7 @@ class ManageCompetitors extends Component {
                   type="text"
                   className="form-control"
                   id="inputName"
-                  placeholder="Nieuwe kikker"
+                  placeholder="Kikker-naam"
                   autoComplete="off"
                   onChange={this.handleNameChange}
                   value={this.state.newCompetitorName}
