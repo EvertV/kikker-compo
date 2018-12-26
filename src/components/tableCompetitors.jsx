@@ -21,12 +21,18 @@ class TableCompetitors extends Component {
           <tr>
             <th>Naam</th>
             <th>Punten</th>
-            <th className="text-center">Acties</th>
+            <th>Bewerk</th>
           </tr>
         </thead>
         <tbody>
           {this.state.competitors.sort(this.comparePoints).map(c => (
-            <Competitor key={c.name} name={c.name} points={c.points} />
+            <Competitor
+              key={c.name}
+              name={c.name}
+              points={c.points}
+              logs={c.logs}
+              onDelete={this.onDeleteLogCompetitor}
+            />
           ))}
         </tbody>
       </table>
@@ -44,6 +50,9 @@ class TableCompetitors extends Component {
     }
     return comparison;
   }
+  onDeleteLogCompetitor = () => {
+    this.props.onDeleteLogCompetitor();
+  };
 }
 
 export default TableCompetitors;

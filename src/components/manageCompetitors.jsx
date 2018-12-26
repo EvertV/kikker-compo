@@ -12,7 +12,7 @@ class ManageCompetitors extends Component {
         <div>
           <button
             type="button"
-            className="btn btn-primary"
+            className={this.getShowAddCompetitorClasses()}
             onClick={this.handleShowAddCompetitor}
           >
             <i className="glyphicon glyphicon-plus" /> Nieuwe deelnemer
@@ -30,25 +30,29 @@ class ManageCompetitors extends Component {
             onSubmit={this.onAddCompetitorHelper}
           >
             <div className="form-group">
-              <label htmlFor="inputName" className="hidden">
+              <label htmlFor="inputName" className="sr-only">
                 Naam
               </label>
-              <input
-                type="text"
-                className="form-control"
-                id="inputName"
-                placeholder="Nieuwe kikker"
-                autoComplete="off"
-                onChange={this.handleNameChange}
-                value={this.state.newCompetitorName}
-                ref={input => {
-                  this.inputName = input && input.focus();
-                }}
-              />
+              <div className="input-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="inputName"
+                  placeholder="Nieuwe kikker"
+                  autoComplete="off"
+                  onChange={this.handleNameChange}
+                  value={this.state.newCompetitorName}
+                  ref={input => {
+                    this.inputName = input && input.focus();
+                  }}
+                />
+                <span className="input-group-btn">
+                  <button type="submit" className="btn btn-primary">
+                    <i className="glyphicon glyphicon-plus" /> Toevoegen
+                  </button>
+                </span>
+              </div>
             </div>
-            <button type="submit" className="btn btn-default">
-              <i className="glyphicon glyphicon-plus" />
-            </button>
           </form>
         </div>
       </React.Fragment>
@@ -69,6 +73,11 @@ class ManageCompetitors extends Component {
     e.preventDefault();
     this.setState({ newCompetitorName: "" });
     this.props.onAddCompetitor(this.state.newCompetitorName);
+  };
+
+  getShowAddCompetitorClasses = () => {
+    const classes = "btn btn-default ";
+    return this.state.showAddCompetitor ? classes + "active" : classes;
   };
 }
 
