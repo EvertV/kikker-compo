@@ -14,7 +14,7 @@ class App extends Component {
             date: moment(),
             id: "Mike&&" + moment().millisecond(),
             amount: 10,
-            reason: "haha mike"
+            reason: "Adje"
           }
         ]
       },
@@ -24,8 +24,8 @@ class App extends Component {
           {
             date: moment(),
             id: "Mike&&" + moment().millisecond(),
-            amount: 1560,
-            reason: "haha kennn"
+            amount: 15,
+            reason: "Kikkeren in de stoel"
           }
         ]
       },
@@ -35,8 +35,8 @@ class App extends Component {
           {
             date: moment(),
             id: "Sieger&&" + moment().millisecond(),
-            amount: 53,
-            reason: "haha SIEGER 3"
+            amount: 50,
+            reason: "Nen bak gekocht"
           }
         ]
       }

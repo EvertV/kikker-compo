@@ -172,9 +172,13 @@ class Competitor extends Component {
       this.state.newLogAmount,
       this.state.newLogReason
     );
+    this.setState({
+      newLogAmount: 0,
+      newLogReason: ""
+    });
   };
 
-  onUpdateCompetitorName = e => {
+  handleEditCompetitorName = e => {
     e.preventDefault();
     this.setState(prevState => ({ name: prevState.newName }));
     this.props.onUpdateCompetitorName(this.state.newName);
