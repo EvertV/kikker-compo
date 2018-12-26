@@ -6,7 +6,7 @@ class Competitor extends Component {
     name: this.props.name,
     logs: this.props.logs,
     showEditCompetitor: false,
-    showLogCompetitor: true,
+    showLogCompetitor: false,
     entryReason: "",
     entryPoints: 0,
     isActiveRow: false,
