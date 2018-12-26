@@ -16,26 +16,31 @@ class TableCompetitors extends Component {
 
   render() {
     return (
-      <table className="table table-responsive">
-        <thead>
-          <tr>
-            <th>Naam</th>
-            <th>Punten</th>
-            <th>Bewerk</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.state.competitors.sort(this.comparePoints).map(c => (
-            <Competitor
-              key={c.name}
-              name={c.name}
-              points={c.points}
-              logs={c.logs}
-              onDelete={this.onDeleteLogCompetitor}
-            />
-          ))}
-        </tbody>
-      </table>
+      <div className="table-responsive">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Naam</th>
+              <th>Punten</th>
+              <th>Acties</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.competitors.sort(this.comparePoints).map(c => (
+              <Competitor
+                key={c.name}
+                name={c.name}
+                points={c.points}
+                logs={c.logs}
+                onDeleteLog={(name, id) =>
+                  this.props.onDeleteLogCompetitor(name, id)
+                }
+                onDeleteCompetitor={name => this.props.onDeleteCompetitor(name)}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   }
   comparePoints(a, b) {
@@ -50,9 +55,6 @@ class TableCompetitors extends Component {
     }
     return comparison;
   }
-  onDeleteLogCompetitor = () => {
-    this.props.onDeleteLogCompetitor();
-  };
 }
 
 export default TableCompetitors;

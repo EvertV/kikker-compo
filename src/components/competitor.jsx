@@ -6,10 +6,11 @@ class Competitor extends Component {
     name: this.props.name,
     logs: this.props.logs,
     showEditCompetitor: false,
-    showLogCompetitor: false,
+    showLogCompetitor: true,
     entryReason: "",
     entryPoints: 0,
-    isActiveRow: false
+    isActiveRow: false,
+    newName: this.props.name
   };
 
   render() {
@@ -19,18 +20,6 @@ class Competitor extends Component {
           <td>{this.state.name}</td>
           <td>{this.calculatePointsFromLogs()}</td>
           <td>
-            {/*<button
-            onClick={this.handleIncrement}
-            className="btn btn-success btn-sm"
-          >
-            <i className="glyphicon glyphicon-plus" />
-          </button>{" "}
-          <button
-            onClick={this.handleDecrease}
-            className="btn btn-danger btn-sm"
-          >
-            <i className="glyphicon glyphicon-minus" />
-          </button>*/}
             <button
               className={this.getShowEditCompetitorClasses()}
               onClick={this.handleShowEditCompetitor}
@@ -56,14 +45,59 @@ class Competitor extends Component {
           >
             <form
               className="form-inline"
-              onSubmit={this.onEditCompetitorHelper}
+              onSubmit={this.handleEditCompetitorName}
             >
-              <h4>
-                Edit {this.state.name}&nbsp;
-                <small>Nieuwe log</small>
-              </h4>
-
-              <div className="form-group input-group col-lg-1">
+              <div className="input-group form-group">
+                <label htmlFor="inputName" className="sr-only">
+                  Naam
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="inputName"
+                  placeholder="Naam"
+                  autoComplete="off"
+                  value={this.state.newName}
+                  onChange={this.handleEditCompetitorNameChange}
+                  ref={input => {
+                    this.inputName = input && input.focus();
+                  }}
+                />
+                <span className="input-group-btn">
+                  <button type="submit" className="btn btn-primary">
+                    <i className="glyphicon glyphicon-ok" /> Naam wijzigen
+                  </button>
+                </span>
+              </div>
+            </form>
+            <br />
+            <form className="form" onSubmit={this.handleDeleteCompetitor}>
+              <div className="form-group">
+                <button type="submit" className="btn btn-secondary">
+                  <i className="glyphicon glyphicon-trash" /> Verwijder kikker
+                </button>
+              </div>
+            </form>
+          </td>
+        </tr>
+        <tr className="active">
+          <td
+            colSpan="3"
+            style={{
+              display: this.state.showLogCompetitor ? "table-cell" : "none",
+              paddingBottom: 15
+            }}
+          >
+            <h4>
+              Kikker {this.state.name}&nbsp;
+              <small>Overzicht</small>
+            </h4>
+            <h5>Nieuwe log</h5>
+            <form
+              className="form-inline"
+              onSubmit={this.onAddLogCompetitorHelper}
+            >
+              <div className="form-group input-group">
                 <label htmlFor="inputEntryPoints" className="sr-only">
                   Aantal
                 </label>
@@ -77,7 +111,7 @@ class Competitor extends Component {
                 />
                 <span className="input-group-btn" />
               </div>
-              <div className="input-group form-group col-lg-11">
+              <div className="input-group form-group">
                 <label htmlFor="inputEntryPoints" className="sr-only">
                   Reden
                 </label>
@@ -97,49 +131,41 @@ class Competitor extends Component {
                 </span>
               </div>
             </form>
-          </td>
-        </tr>
-        <tr className="active">
-          <td
-            colSpan="3"
-            style={{
-              display: this.state.showLogCompetitor ? "table-cell" : "none",
-              paddingBottom: 15
-            }}
-          >
-            <h4>
-              Bekijk {this.state.name}&nbsp;
-              <small>Alle logs</small>
-            </h4>
-            <div className="table-responsive">
-              <table className="table table-bordered table-striped">
-                <thead>
-                  <tr>
-                    <th>Datum</th>
-                    <th>Aantal</th>
-                    <th>Reden</th>
-                    <th>Verwijder</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.logs.map(log => (
-                    <Log
-                      key={log.date}
-                      date={log.date}
-                      amount={log.amount}
-                      reason={log.reason}
-                    />
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <h5>Historiek</h5>
+            {this.state.logs.map(log => (
+              <Log
+                key={log.id}
+                id={log.id}
+                date={log.date}
+                amount={log.amount}
+                reason={log.reason}
+                name={this.state.name}
+                onDeleteLog={(name, id) => this.props.onDeleteLog(name, id)}
+              />
+            ))}
           </td>
         </tr>
       </React.Fragment>
     );
   }
 
+  handleEditCompetitorNameChange = e => {
+    this.setState({ newName: e.target.value });
+  };
+
+  handleEditCompetitorName = e => {
+    e.preventDefault();
+    this.setState(prevState => ({ name: prevState.newName }));
+    this.handleShowEditCompetitor();
+  };
+
+  handleDeleteCompetitor = e => {
+    e.preventDefault();
+    this.props.onDeleteCompetitor(this.state.name);
+  };
+
   handleEntryReasonChange = e => {
+    e.preventDefault();
     this.setState({ entryReason: e.target.value });
   };
 

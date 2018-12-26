@@ -12,13 +12,9 @@ class App extends Component {
         logs: [
           {
             date: moment(),
+            id: "Mike&&" + moment().millisecond(),
             amount: 10,
             reason: "haha mike"
-          },
-          {
-            date: moment(),
-            amount: 25,
-            reason: "haha mike 2"
           }
         ]
       },
@@ -27,24 +23,22 @@ class App extends Component {
         logs: [
           {
             date: moment(),
+            id: "Mike&&" + moment().millisecond(),
             amount: 1560,
             reason: "haha kennn"
-          },
-          {
-            date: moment(),
-            amount: 13,
-            reason: "haha jken 2"
-          },
-          {
-            date: moment(),
-            amount: 53,
-            reason: "haha jken 3"
           }
         ]
       },
       {
         name: "Sieger",
-        logs: []
+        logs: [
+          {
+            date: moment(),
+            id: "Sieger&&" + moment().millisecond(),
+            amount: 53,
+            reason: "haha SIEGER 3"
+          }
+        ]
       }
     ]
   };
@@ -64,7 +58,10 @@ class App extends Component {
         <h3>Scorebord</h3>
         <TableCompetitors
           competitors={this.state.competitors}
-          onDeleteLogCompetitor={this.handleDeleteLogCompetitor}
+          onDeleteLogCompetitor={(name, id) =>
+            this.handleDeleteLogCompetitor(name, id)
+          }
+          onDeleteCompetitor={name => this.handleDeleteCompetitor(name)}
         />
       </React.Fragment>
     );
@@ -74,7 +71,8 @@ class App extends Component {
       name.trim() !== "" &&
       !this.state.competitors.some(
         c => c["name"].toLowerCase().trim() === name.toLowerCase().trim()
-      )
+      ) &&
+      name.length < 50
     ) {
       this.setState(prevState => ({
         competitors: [
@@ -93,8 +91,20 @@ class App extends Component {
       }));
     }
   };
-  handleDeleteLogCompetitor = () => {
-    console.log("del log");
+  handleDeleteLogCompetitor = (name, id) => {
+    console.log(
+      name,
+      id,
+      this.state.competitors.find(el => el.name === name),
+      this.state.competitors
+        .find(el => el.name === name)
+        .find(el => el.logs.id === id)
+    );
+  };
+  handleDeleteCompetitor = name => {
+    this.setState(prevState => ({
+      competitors: prevState.competitors.filter(el => el.name !== name)
+    }));
   };
 }
 

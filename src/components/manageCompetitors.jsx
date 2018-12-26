@@ -52,6 +52,9 @@ class ManageCompetitors extends Component {
                   </button>
                 </span>
               </div>
+              <span className="help-block text-danger">
+                De kikker-naam moet uniek zijn en niet langer dan 50 tekens.
+              </span>
             </div>
           </form>
         </div>
