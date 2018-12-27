@@ -4,10 +4,9 @@ import * as moment from "moment";
 
 class Competitor extends Component {
   state = {
-    name: this.props.competitor.name,
+    dateAdded: this.props.competitor.dateAdded,
     logs: this.props.logs,
     newName: this.props.competitor.name,
-    dateAdded: this.props.competitor.dateAdded,
     showEditCompetitor: false,
     showLogCompetitor: false,
     isActiveRow: false,
@@ -28,7 +27,7 @@ class Competitor extends Component {
     return (
       <React.Fragment>
         <tr className={this.state.isActiveRow ? "default" : ""}>
-          <td>{this.state.name}</td>
+          <td>{this.props.competitor.name}</td>
           <td>{this.calculatePointsFromLogs()}</td>
           <td>
             <button
@@ -63,7 +62,7 @@ class Competitor extends Component {
                 </div>
                 <div className="panel-body">
                   <ul>
-                    <li>Naam: {this.state.name}</li>
+                    <li>Naam: {this.props.competitor.name}</li>
                     <li>Kikkerpunten: {this.calculatePointsFromLogs()}</li>
                     <li>Aantal logs: {this.state.logs.length}</li>
                     <li>
@@ -82,7 +81,7 @@ class Competitor extends Component {
                 <div className="panel-body">
                   <form
                     className="form-inline"
-                    onSubmit={this.handleEditCompetitorName}
+                    onSubmit={this.onUpdateCompetitorName}
                   >
                     <div className="input-group form-group">
                       <label htmlFor="inputName" className="sr-only">
@@ -95,7 +94,7 @@ class Competitor extends Component {
                         placeholder="Naam"
                         autoComplete="off"
                         value={this.state.newName}
-                        onChange={this.handleEditCompetitorNameChange}
+                        onChange={this.handleNameChange}
                         ref={input => {
                           this.inputName = input && input.focus();
                         }}
@@ -177,7 +176,7 @@ class Competitor extends Component {
                 </div>
               </div>
             </div>
-            <div className="list-group col-sm-6" style={{ maxWidth: 400 }}>
+            <div className="list-group col-sm-6" style={{ maxWidth: 600 }}>
               <div className="panel panel-default">
                 <div className="panel-heading">
                   <strong>Historiek</strong>
@@ -187,7 +186,7 @@ class Competitor extends Component {
                     <Log
                       key={log.id}
                       log={log}
-                      name={this.state.name}
+                      name={this.props.competitor.name}
                       onDeleteLog={(name, id) =>
                         this.props.onDeleteLog(name, id)
                       }
@@ -214,7 +213,7 @@ class Competitor extends Component {
     return comparison;
   }
 
-  handleEditCompetitorNameChange = e => {
+  handleNameChange = e => {
     this.setState({ newName: e.target.value });
   };
   handleNewLogAmountChange = e => {
@@ -227,7 +226,7 @@ class Competitor extends Component {
   onAddLogHelper = e => {
     e.preventDefault();
     this.props.onAddLog(
-      this.state.name,
+      this.props.competitor.name,
       this.state.newLogAmount,
       this.state.newLogReason
     );
@@ -237,16 +236,18 @@ class Competitor extends Component {
     });
   };
 
-  handleEditCompetitorName = e => {
+  onUpdateCompetitorName = e => {
     e.preventDefault();
-    this.setState(prevState => ({ name: prevState.newName }));
-    this.props.onUpdateCompetitorName(this.state.newName);
+    this.props.onUpdateCompetitorName(
+      this.props.competitor.name,
+      this.state.newName
+    );
     this.handleShowEditCompetitor();
   };
 
   handleDeleteCompetitor = e => {
     e.preventDefault();
-    this.props.onDeleteCompetitor(this.state.name);
+    this.props.onDeleteCompetitor(this.props.competitor.name);
   };
 
   handleShowEditCompetitor = () => {

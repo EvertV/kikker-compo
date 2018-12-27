@@ -65,7 +65,9 @@ class App extends Component {
             this.handleDeleteLogCompetitor(name, id)
           }
           onDeleteCompetitor={name => this.handleDeleteCompetitor(name)}
-          onUpdateCompetitorName={name => this.handleUpdateCompetitorName(name)}
+          onUpdateCompetitorName={(oldName, newName) =>
+            this.handleUpdateCompetitorName(oldName, newName)
+          }
           onAddLogCompetitor={(name, amount, reason) =>
             this.handleAddLogCompetitor(name, amount, reason)
           }
@@ -117,9 +119,17 @@ class App extends Component {
       competitors: prevState.competitors.filter(el => el.name !== name)
     }));
   };
-  handleUpdateCompetitorName = name => {
-    /* PAS NAAM AAN
-    Zodat DELETE ook werkt als de naam gewijzigd is*/
+  handleUpdateCompetitorName = (oldName, newName) => {
+    var comps = this.state.competitors;
+    comps.forEach(e => {
+      if (e.name === oldName) {
+        e.name = newName;
+      }
+    });
+
+    this.setState(prevState => ({
+      competitors: comps
+    }));
   };
   handleAddLogCompetitor = (name, amount, reason) => {
     if (reason && reason.length < 150 && amount !== 0) {

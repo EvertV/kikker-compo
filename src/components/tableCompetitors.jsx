@@ -38,8 +38,8 @@ class TableCompetitors extends Component {
                   this.props.onAddLogCompetitor(name, amount, reason)
                 }
                 onDeleteCompetitor={name => this.props.onDeleteCompetitor(name)}
-                onUpdateCompetitorName={name =>
-                  this.props.onUpdateCompetitorName(name)
+                onUpdateCompetitorName={(oldName, newName) =>
+                  this.props.onUpdateCompetitorName(oldName, newName)
                 }
               />
             ))}
