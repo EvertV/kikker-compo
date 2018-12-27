@@ -46,7 +46,7 @@ class Competitor extends Component {
               borderTop: this.state.isActiveRow ? "0" : "1px solid #ddd"
             }}
           >
-            <div className="container-fluid row">
+            <div className="row">
               <div className="col-sm">
                 <div className="card mb-2">
                   <div className="card-header">Overzicht</div>
@@ -139,7 +139,7 @@ class Competitor extends Component {
               borderTop: this.state.isActiveRow ? "0" : "1px solid #ddd"
             }}
           >
-            <div className="container row">
+            <div className="row">
               <div className="col-sm">
                 <div className="card">
                   <div className="card-header">Kikkerpunten toevoegen</div>
@@ -168,7 +168,7 @@ class Competitor extends Component {
                           id="inputNewLogAmount"
                           placeholder="#"
                           autoComplete="off"
-                          style={{ maxWidth: 65 }}
+                          style={{ maxWidth: 75 }}
                           value={this.state.newLogAmount}
                           onChange={this.handleNewLogAmountChange}
                         />
@@ -178,6 +178,10 @@ class Competitor extends Component {
                           </button>
                         </span>
                       </div>
+                      <small className="form-text text-muted">
+                        De reden mag max. 150 tekens lang zijn en de
+                        kikkerpunten niet gelijk aan 0.
+                      </small>
                     </form>
                   </div>
                 </div>

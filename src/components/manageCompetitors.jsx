@@ -45,7 +45,7 @@ class ManageCompetitors extends Component {
                 }}
               />
               <small className="form-text text-muted">
-                De kikker-naam moet uniek zijn en niet langer dan 50 tekens.
+                De kikker-naam moet uniek zijn en max. 50 tekens.
               </small>
               <button type="submit" className="btn btn-primary mt-2">
                 <Octicon name="plus" />

@@ -51,7 +51,7 @@ class App extends Component {
         <div className="page-header text-center">
           <h1 className="display-4">
             Kikker&nbsp;Compo
-            <h4 className="text-muted lead">Gateway&nbsp;Gaming</h4>
+            <p className="text-muted lead">Gateway&nbsp;Gaming</p>
           </h1>
         </div>
         <ManageCompetitors
@@ -59,7 +59,7 @@ class App extends Component {
           onAddCompetitor={this.handleAddCompetitor}
         />
 
-        <h2 class="mt-2">Scorebord</h2>
+        <h2 className="mt-2">Scorebord</h2>
         <TableCompetitors
           competitors={this.state.competitors}
           onDeleteLogCompetitor={(name, id) =>
