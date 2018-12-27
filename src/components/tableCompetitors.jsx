@@ -2,18 +2,6 @@ import React, { Component } from "react";
 import Competitor from "./competitor";
 
 class TableCompetitors extends Component {
-  state = {
-    competitors: this.props.competitors
-  };
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props !== nextProps) {
-      this.setState({
-        competitors: nextProps.competitors
-      });
-    }
-  }
-
   render() {
     return (
       <div className="table-responsive">
@@ -26,7 +14,7 @@ class TableCompetitors extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.competitors.sort(this.comparePoints).map(c => (
+            {this.props.competitors.sort(this.comparePoints).map(c => (
               <Competitor
                 key={c.name}
                 competitor={c}

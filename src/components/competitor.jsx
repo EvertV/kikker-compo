@@ -4,23 +4,13 @@ import * as moment from "moment";
 
 class Competitor extends Component {
   state = {
-    dateAdded: this.props.competitor.dateAdded,
-    logs: this.props.logs,
     newName: this.props.competitor.name,
     showEditCompetitor: false,
     showLogCompetitor: false,
     isActiveRow: false,
-    newLogAmount: 0,
+    newLogAmount: "",
     newLogReason: ""
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props !== nextProps) {
-      this.setState({
-        logs: nextProps.logs
-      });
-    }
-  }
 
   render() {
     moment.locale("nl-be");
@@ -61,15 +51,30 @@ class Competitor extends Component {
                   <strong>Overzicht</strong>
                 </div>
                 <div className="panel-body">
-                  <ul>
-                    <li>Naam: {this.props.competitor.name}</li>
-                    <li>Kikkerpunten: {this.calculatePointsFromLogs()}</li>
-                    <li>Aantal logs: {this.state.logs.length}</li>
-                    <li>
-                      Toegevoegd op:{" "}
-                      {this.state.dateAdded.format("D/MM/YY, H:mm:ss")}
-                    </li>
-                  </ul>
+                  <p>
+                    Naam
+                    <br />
+                    <strong>{this.props.competitor.name}</strong>
+                  </p>
+                  <p>
+                    Kikkerpunten
+                    <br />
+                    <strong>{this.calculatePointsFromLogs()}</strong>
+                  </p>
+                  <p>
+                    Aantal logs
+                    <br />
+                    <strong>{this.props.logs.length}</strong>
+                  </p>
+                  <p>
+                    Aangemaakt
+                    <br />
+                    <strong>
+                      {this.props.competitor.dateAdded.format(
+                        "D/MM/YY, H:mm:ss"
+                      )}
+                    </strong>
+                  </p>
                 </div>
               </div>
             </div>
@@ -95,9 +100,9 @@ class Competitor extends Component {
                         autoComplete="off"
                         value={this.state.newName}
                         onChange={this.handleNameChange}
-                        ref={input => {
+                        /*ref={input => {
                           this.inputName = input && input.focus();
-                        }}
+                        }}*/
                       />
                       <span className="input-group-btn">
                         <button type="submit" className="btn btn-primary">
@@ -158,7 +163,7 @@ class Competitor extends Component {
                         type="number"
                         className="form-control"
                         id="inputNewLogAmount"
-                        placeholder="Aantal"
+                        placeholder="#"
                         autoComplete="off"
                         style={{ maxWidth: 65 }}
                         value={this.state.newLogAmount}
@@ -182,7 +187,7 @@ class Competitor extends Component {
                   <strong>Historiek</strong>
                 </div>
                 <div className="panel-body">
-                  {this.state.logs.sort(this.compareDate).map(log => (
+                  {this.props.logs.sort(this.compareDate).map(log => (
                     <Log
                       key={log.id}
                       log={log}
@@ -231,7 +236,7 @@ class Competitor extends Component {
       this.state.newLogReason
     );
     this.setState({
-      newLogAmount: 0,
+      newLogAmount: "",
       newLogReason: ""
     });
   };
@@ -277,7 +282,7 @@ class Competitor extends Component {
     return state ? classes + "active" : classes;
   };
   calculatePointsFromLogs = () => {
-    return this.state.logs.reduce(function(tot, record) {
+    return this.props.logs.reduce(function(tot, record) {
       return tot + record.amount;
     }, 0);
   };

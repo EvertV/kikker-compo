@@ -48,9 +48,9 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="page-header">
+        <div className="page-header text-center">
           <h1>
-            Kikker Compo <small>Gateway Gaming</small>
+            Kikker&nbsp;Compo <small>Gateway&nbsp;Gaming</small>
           </h1>
         </div>
         <ManageCompetitors

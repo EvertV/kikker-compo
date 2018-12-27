@@ -2,14 +2,13 @@ import React, { Component } from "react";
 
 class ManageCompetitors extends Component {
   state = {
-    competitors: this.props.competitors,
     showAddCompetitor: false,
     newCompetitorName: ""
   };
   render() {
     return (
       <React.Fragment>
-        <div className="pull-right">
+        <div className="text-center">
           <button
             type="button"
             className={this.getShowAddCompetitorClasses()}
@@ -22,9 +21,10 @@ class ManageCompetitors extends Component {
           style={{
             display: this.state.showAddCompetitor ? "block" : "none"
           }}
+          className="text-center"
         >
           <form
-            className="form-inline well"
+            className="form-inline well text-center"
             style={{ display: "inline-block", marginTop: 10 }}
             onSubmit={this.onAddCompetitorHelper}
           >

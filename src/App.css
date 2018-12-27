@@ -7,3 +7,6 @@ button:focus {
 .list-group-item-heading {
   word-wrap: break-word;
 }
+.list-group {
+  padding-left: 15px;
+}
