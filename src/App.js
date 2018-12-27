@@ -49,8 +49,9 @@ class App extends Component {
     return (
       <React.Fragment>
         <div className="page-header text-center">
-          <h1>
-            Kikker&nbsp;Compo <small>Gateway&nbsp;Gaming</small>
+          <h1 className="display-4">
+            Kikker&nbsp;Compo
+            <h4 className="text-muted lead">Gateway&nbsp;Gaming</h4>
           </h1>
         </div>
         <ManageCompetitors
@@ -58,7 +59,7 @@ class App extends Component {
           onAddCompetitor={this.handleAddCompetitor}
         />
 
-        <h3>Scorebord</h3>
+        <h2 class="mt-2">Scorebord</h2>
         <TableCompetitors
           competitors={this.state.competitors}
           onDeleteLogCompetitor={(name, id) =>
@@ -135,7 +136,7 @@ class App extends Component {
     }));
   };
   handleAddLogCompetitor = (name, amount, reason) => {
-    if (reason && reason.length < 150 && amount !== 0) {
+    if (reason && reason.length < 150 && amount !== 0 && amount !== "") {
       var competitors = this.state.competitors;
       competitors.forEach(e => {
         if (e.name === name) {

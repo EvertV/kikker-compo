@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Octicon from "react-octicon";
 
 class ManageCompetitors extends Component {
   state = {
@@ -8,55 +9,50 @@ class ManageCompetitors extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="text-center">
+        <div className="text-center mt-3">
           <button
             type="button"
             className={this.getShowAddCompetitorClasses()}
             onClick={this.handleShowAddCompetitor}
           >
-            <i className="glyphicon glyphicon-plus" /> Nieuwe deelnemer
+            <Octicon name="person" />
+            &nbsp;Nieuwe deelnemer
           </button>
         </div>
         <div
           style={{
             display: this.state.showAddCompetitor ? "block" : "none"
           }}
-          className="text-center"
+          className="card text-center mt-3"
         >
-          <form
-            className="form-inline well text-center"
-            style={{ display: "inline-block", marginTop: 10 }}
-            onSubmit={this.onAddCompetitorHelper}
-          >
-            <h4>Nieuwe deelnemer toevoegen</h4>
-            <div className="form-group">
-              <label htmlFor="inputName" className="sr-only">
-                Naam
-              </label>
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputName"
-                  placeholder="Kikker-naam"
-                  autoComplete="off"
-                  onChange={this.handleNameChange}
-                  value={this.state.newCompetitorName}
-                  ref={input => {
-                    this.inputName = input && input.focus();
-                  }}
-                />
-                <span className="input-group-btn">
-                  <button type="submit" className="btn btn-primary">
-                    <i className="glyphicon glyphicon-plus" /> Toevoegen
-                  </button>
-                </span>
-              </div>
-              <span className="help-block text-danger">
+          <div className="card-header">Nieuwe deelnemer toevoegen</div>
+          <div className="card-body">
+            <form
+              className="form"
+              style={{ display: "inline-block" }}
+              onSubmit={this.onAddCompetitorHelper}
+            >
+              <input
+                type="text"
+                className="form-control"
+                id="inputName"
+                placeholder="Kikker-naam"
+                autoComplete="off"
+                onChange={this.handleNameChange}
+                value={this.state.newCompetitorName}
+                ref={input => {
+                  this.inputName = input && input.focus();
+                }}
+              />
+              <small className="form-text text-muted">
                 De kikker-naam moet uniek zijn en niet langer dan 50 tekens.
-              </span>
-            </div>
-          </form>
+              </small>
+              <button type="submit" className="btn btn-primary mt-2">
+                <Octicon name="plus" />
+                &nbsp;Toevoegen
+              </button>
+            </form>
+          </div>
         </div>
       </React.Fragment>
     );
@@ -79,7 +75,7 @@ class ManageCompetitors extends Component {
   };
 
   getShowAddCompetitorClasses = () => {
-    const classes = "btn btn-default ";
+    const classes = "btn btn-outline-secondary ";
     return this.state.showAddCompetitor ? classes + "active" : classes;
   };
 }
