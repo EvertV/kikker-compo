@@ -18,7 +18,7 @@ class Competitor extends Component {
       <React.Fragment>
         <tr className={this.state.isActiveRow ? "default" : ""}>
           <td>{this.props.competitor.name}</td>
-          <td>{this.calculatePointsFromLogs()}</td>
+          <td>{this.props.onCalculatePointsFromLogs(this.props.logs)}</td>
           <td>
             <button
               className={this.getShowEditCompetitorClasses()}
@@ -59,7 +59,9 @@ class Competitor extends Component {
                   <p>
                     Kikkerpunten
                     <br />
-                    <strong>{this.calculatePointsFromLogs()}</strong>
+                    <strong>
+                      {this.props.onCalculatePointsFromLogs(this.props.logs)}
+                    </strong>
                   </p>
                   <p>
                     Aantal logs
@@ -280,11 +282,6 @@ class Competitor extends Component {
   getShowButtonClasses = state => {
     const classes = "btn btn-default btn-sm ";
     return state ? classes + "active" : classes;
-  };
-  calculatePointsFromLogs = () => {
-    return this.props.logs.reduce(function(tot, record) {
-      return tot + record.amount;
-    }, 0);
   };
 }
 

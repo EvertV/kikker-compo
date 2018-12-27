@@ -71,6 +71,9 @@ class App extends Component {
           onAddLogCompetitor={(name, amount, reason) =>
             this.handleAddLogCompetitor(name, amount, reason)
           }
+          onCalculatePointsFromLogs={logArray =>
+            this.handleCalculatePointsFromLogs(logArray)
+          }
         />
       </React.Fragment>
     );
@@ -152,6 +155,11 @@ class App extends Component {
         competitors: competitors
       }));
     }
+  };
+  handleCalculatePointsFromLogs = logArray => {
+    return logArray.reduce(function(totalAmount, log) {
+      return totalAmount + log.amount;
+    }, 0);
   };
 }
 

@@ -29,6 +29,9 @@ class TableCompetitors extends Component {
                 onUpdateCompetitorName={(oldName, newName) =>
                   this.props.onUpdateCompetitorName(oldName, newName)
                 }
+                onCalculatePointsFromLogs={logArray =>
+                  this.props.onCalculatePointsFromLogs(logArray)
+                }
               />
             ))}
           </tbody>
@@ -36,9 +39,9 @@ class TableCompetitors extends Component {
       </div>
     );
   }
-  comparePoints(a, b) {
-    const userPointsA = a.points;
-    const userPointsB = b.points;
+  comparePoints = (a, b) => {
+    const userPointsA = this.props.onCalculatePointsFromLogs(a.logs);
+    const userPointsB = this.props.onCalculatePointsFromLogs(b.logs);
 
     let comparison = 0;
     if (userPointsA < userPointsB) {
@@ -47,7 +50,7 @@ class TableCompetitors extends Component {
       comparison = -1;
     }
     return comparison;
-  }
+  };
 }
 
 export default TableCompetitors;
