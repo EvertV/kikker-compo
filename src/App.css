@@ -4,6 +4,6 @@ button:focus {
 .input-group-btn {
   width: 0;
 }
-.new-log-reason-input {
-  width: 100% !important;
+.list-group-item-heading {
+  word-wrap: break-word;
 }

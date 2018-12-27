@@ -3,10 +3,10 @@ import * as moment from "moment";
 
 class Log extends Component {
   state = {
-    id: this.props.id,
-    date: this.props.date,
-    amount: this.props.amount,
-    reason: this.props.reason
+    id: this.props.log.id,
+    date: this.props.log.date,
+    amount: this.props.log.amount,
+    reason: this.props.log.reason
   };
   render() {
     moment.locale("nl-be");
@@ -23,10 +23,10 @@ class Log extends Component {
           {this.state.reason}&nbsp;
           <span className="pull-right">
             <small>Punten:&nbsp;</small>
-            <span className="label label-info">{this.state.amount}</span>
+            <span className={this.getLabelClasses()}>{this.state.amount}</span>
           </span>
         </h4>
-        <br />
+        <i>{this.props.name}</i>
         <p className="list-group-item-text">
           {date}
           <button
@@ -40,6 +40,9 @@ class Log extends Component {
         </p>
       </div>
     );
+  }
+  getLabelClasses() {
+    return "label label-" + (this.state.amount > 0 ? "info" : "danger");
   }
 }
 

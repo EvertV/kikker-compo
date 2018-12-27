@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import Log from "./log";
+import * as moment from "moment";
 
 class Competitor extends Component {
   state = {
-    name: this.props.name,
+    name: this.props.competitor.name,
     logs: this.props.logs,
+    newName: this.props.competitor.name,
+    dateAdded: this.props.competitor.dateAdded,
     showEditCompetitor: false,
     showLogCompetitor: false,
     isActiveRow: false,
-    newName: this.props.name,
     newLogAmount: 0,
     newLogReason: ""
   };
@@ -22,9 +24,10 @@ class Competitor extends Component {
   }
 
   render() {
+    moment.locale("nl-be");
     return (
       <React.Fragment>
-        <tr className={this.state.isActiveRow ? "active" : ""}>
+        <tr className={this.state.isActiveRow ? "default" : ""}>
           <td>{this.state.name}</td>
           <td>{this.calculatePointsFromLogs()}</td>
           <td>
@@ -43,110 +46,155 @@ class Competitor extends Component {
             </button>
           </td>
         </tr>
-        <tr className="active">
+        <tr className="default">
           <td
             colSpan="3"
+            className="container row"
             style={{
               display: this.state.showEditCompetitor ? "table-cell" : "none",
-              paddingBottom: 15
+              paddingBottom: 15,
+              borderTop: this.state.isActiveRow ? "0" : "1px solid #ddd"
             }}
           >
-            <form
-              className="form-inline"
-              onSubmit={this.handleEditCompetitorName}
-            >
-              <div className="input-group form-group">
-                <label htmlFor="inputName" className="sr-only">
-                  Naam
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputName"
-                  placeholder="Naam"
-                  autoComplete="off"
-                  value={this.state.newName}
-                  onChange={this.handleEditCompetitorNameChange}
-                  ref={input => {
-                    this.inputName = input && input.focus();
-                  }}
-                />
-                <span className="input-group-btn">
-                  <button type="submit" className="btn btn-primary">
-                    <i className="glyphicon glyphicon-ok" /> Naam wijzigen
-                  </button>
-                </span>
+            <div className="col-sm-6">
+              <div className="panel panel-default">
+                <div className="panel-heading">
+                  <strong>Overzicht</strong>
+                </div>
+                <div className="panel-body">
+                  <ul>
+                    <li>Naam: {this.state.name}</li>
+                    <li>Kikkerpunten: {this.calculatePointsFromLogs()}</li>
+                    <li>Aantal logs: {this.state.logs.length}</li>
+                    <li>
+                      Toegevoegd op:{" "}
+                      {this.state.dateAdded.format("D/MM/YY, H:mm:ss")}
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </form>
-            <br />
-            <form className="form" onSubmit={this.handleDeleteCompetitor}>
-              <div className="form-group">
-                <button type="submit" className="btn btn-secondary">
-                  <i className="glyphicon glyphicon-trash" /> Verwijder kikker
-                </button>
+            </div>
+            <div className="col-sm-6">
+              <div className="panel panel-default">
+                <div className="panel-heading">
+                  <strong>Bewerk deelnemer</strong>
+                </div>
+                <div className="panel-body">
+                  <form
+                    className="form-inline"
+                    onSubmit={this.handleEditCompetitorName}
+                  >
+                    <div className="input-group form-group">
+                      <label htmlFor="inputName" className="sr-only">
+                        Naam
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="inputName"
+                        placeholder="Naam"
+                        autoComplete="off"
+                        value={this.state.newName}
+                        onChange={this.handleEditCompetitorNameChange}
+                        ref={input => {
+                          this.inputName = input && input.focus();
+                        }}
+                      />
+                      <span className="input-group-btn">
+                        <button type="submit" className="btn btn-primary">
+                          <i className="glyphicon glyphicon-ok" /> Naam wijzigen
+                        </button>
+                      </span>
+                    </div>
+                  </form>
+                  <br />
+                  <form className="form" onSubmit={this.handleDeleteCompetitor}>
+                    <div className="form-group">
+                      <button type="submit" className="btn btn-secondary">
+                        <i className="glyphicon glyphicon-trash" /> Verwijder
+                        kikker
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </form>
+            </div>
           </td>
         </tr>
-        <tr className="active">
+        <tr className="default">
           <td
             colSpan="3"
+            className="container row"
             style={{
               display: this.state.showLogCompetitor ? "table-cell" : "none",
-              paddingBottom: 15
+              paddingBottom: 15,
+              borderTop: this.state.isActiveRow ? "0" : "1px solid #ddd"
             }}
           >
-            <br />
-            <form onSubmit={this.onAddLogHelper}>
-              <div className="input-group">
-                <label htmlFor="inputNewLogReason" className="sr-only">
-                  Reden
-                </label>
-                <input
-                  type="text"
-                  className="form-control new-log-reason-input"
-                  id="inputName"
-                  placeholder="Geef een reden"
-                  autoComplete="off"
-                  value={this.state.newLogReason}
-                  onChange={this.handleNewLogReasonChange}
-                />
-                <span className="input-group-btn" />
-                <label htmlFor="inputNewLogAmount" className="sr-only">
-                  Aantal
-                </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="inputNewLogAmount"
-                  placeholder="Aantal"
-                  autoComplete="off"
-                  style={{ maxWidth: 65 }}
-                  value={this.state.newLogAmount}
-                  onChange={this.handleNewLogAmountChange}
-                />
-                <span className="input-group-btn" />
-                <span className="input-group-btn">
-                  <button type="submit" className="btn btn-success">
-                    <i className="glyphicon glyphicon-plus" />
-                    &nbsp;Toevoegen
-                  </button>
-                </span>
+            <div className="col-sm-6">
+              <div className="panel panel-default">
+                <div className="panel-heading">
+                  <strong>Kikkerpunten toevoegen</strong>
+                </div>
+                <div className="panel-body">
+                  <form onSubmit={this.onAddLogHelper}>
+                    <div className="input-group">
+                      <label htmlFor="inputNewLogReason" className="sr-only">
+                        Reden
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control new-log-reason-input"
+                        id="inputName"
+                        placeholder="Geef een reden"
+                        autoComplete="off"
+                        value={this.state.newLogReason}
+                        onChange={this.handleNewLogReasonChange}
+                      />
+                      <span className="input-group-btn" />
+                      <label htmlFor="inputNewLogAmount" className="sr-only">
+                        Aantal
+                      </label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="inputNewLogAmount"
+                        placeholder="Aantal"
+                        autoComplete="off"
+                        style={{ maxWidth: 65 }}
+                        value={this.state.newLogAmount}
+                        onChange={this.handleNewLogAmountChange}
+                      />
+                      <span className="input-group-btn" />
+                      <span className="input-group-btn">
+                        <button type="submit" className="btn btn-primary">
+                          <i className="glyphicon glyphicon-plus" />
+                          &nbsp;Toevoegen
+                        </button>
+                      </span>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </form>
-            <hr />
-            <div className="list-group" style={{ maxWidth: 400 }}>
-              {this.state.logs.sort(this.compareDate).map(log => (
-                <Log
-                  key={log.id}
-                  id={log.id}
-                  date={log.date}
-                  amount={log.amount}
-                  reason={log.reason}
-                  name={this.state.name}
-                  onDeleteLog={(name, id) => this.props.onDeleteLog(name, id)}
-                />
-              ))}
+            </div>
+            <div className="list-group col-sm-6" style={{ maxWidth: 400 }}>
+              <div className="panel panel-default">
+                <div className="panel-heading">
+                  <strong>Historiek</strong>
+                </div>
+                <div className="panel-body">
+                  {this.state.logs.sort(this.compareDate).map(log => (
+                    <Log
+                      key={log.id}
+                      log={log}
+                      name={this.state.name}
+                      onDeleteLog={(name, id) =>
+                        this.props.onDeleteLog(name, id)
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
           </td>
         </tr>
@@ -218,18 +266,20 @@ class Competitor extends Component {
   };
 
   getShowEditCompetitorClasses = () => {
-    const classes = "btn btn-default btn-sm ";
-    return this.state.showEditCompetitor ? classes + "active" : classes;
+    return this.getShowButtonClasses(this.state.showEditCompetitor);
   };
   getShowLogCompetitorClasses = () => {
-    const classes = "btn btn-default btn-sm ";
-    return this.state.showLogCompetitor ? classes + "active" : classes;
+    return this.getShowButtonClasses(this.state.showLogCompetitor);
   };
-  calculatePointsFromLogs() {
+  getShowButtonClasses = state => {
+    const classes = "btn btn-default btn-sm ";
+    return state ? classes + "active" : classes;
+  };
+  calculatePointsFromLogs = () => {
     return this.state.logs.reduce(function(tot, record) {
       return tot + record.amount;
     }, 0);
-  }
+  };
 }
 
 export default Competitor;

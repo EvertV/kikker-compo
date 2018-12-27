@@ -9,6 +9,7 @@ class App extends Component {
     competitors: [
       {
         name: "Mike",
+        dateAdded: moment(),
         logs: [
           {
             date: moment(),
@@ -20,6 +21,7 @@ class App extends Component {
       },
       {
         name: "Ken",
+        dateAdded: moment(),
         logs: [
           {
             date: moment(),
@@ -31,6 +33,7 @@ class App extends Component {
       },
       {
         name: "Sieger",
+        dateAdded: moment(),
         logs: [
           {
             date: moment(),
@@ -83,6 +86,7 @@ class App extends Component {
           ...prevState.competitors,
           {
             name: name,
+            dateAdded: moment(),
             logs: [
               {
                 date: moment(),
@@ -118,24 +122,26 @@ class App extends Component {
     Zodat DELETE ook werkt als de naam gewijzigd is*/
   };
   handleAddLogCompetitor = (name, amount, reason) => {
-    var competitors = this.state.competitors;
-    competitors.forEach(e => {
-      if (e.name === name) {
-        e.logs = [
-          ...e.logs,
-          {
-            date: moment(),
-            reason: reason,
-            id: name + "&&" + moment().millisecond(),
-            amount: parseInt(amount)
-          }
-        ];
-      }
-    });
+    if (reason && reason.length < 150 && amount !== 0) {
+      var competitors = this.state.competitors;
+      competitors.forEach(e => {
+        if (e.name === name) {
+          e.logs = [
+            ...e.logs,
+            {
+              date: moment(),
+              reason: reason,
+              id: name + "&&" + moment().millisecond(),
+              amount: parseInt(amount)
+            }
+          ];
+        }
+      });
 
-    this.setState(prevState => ({
-      competitors: competitors
-    }));
+      this.setState(prevState => ({
+        competitors: competitors
+      }));
+    }
   };
 }
 
