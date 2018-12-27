@@ -16,7 +16,7 @@ class Log extends Component {
             </span>
           </span>
         </h5>
-        <p class="text-muted">
+        <p className="text-muted">
           <span>
             {this.props.log.date.format("Humm")}&nbsp;
             <small>{this.props.log.date.format("D MMM")}</small>
