@@ -4,7 +4,7 @@ import Competitor from "./competitor";
 class TableCompetitors extends Component {
   render() {
     return (
-      <div /*className="table-responsive"*/>
+      <div className="mt-3">
         <table className="table">
           <thead>
             <tr>

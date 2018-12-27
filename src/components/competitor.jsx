@@ -120,7 +120,7 @@ class Competitor extends Component {
                       <div className="form-group">
                         <button type="submit" className="btn btn-secondary">
                           <Octicon name="trashcan" />
-                          &nbsp;Verwijder kikker
+                          &nbsp;Verwijder {this.props.competitor.name}
                         </button>
                       </div>
                     </form>
@@ -142,7 +142,9 @@ class Competitor extends Component {
             <div className="row">
               <div className="col-sm">
                 <div className="card">
-                  <div className="card-header">Kikkerpunten toevoegen</div>
+                  <div className="card-header">
+                    Kikkerpunten voor {this.props.competitor.name} toevoegen
+                  </div>
                   <div className="card-body">
                     <form onSubmit={this.onAddLogHelper}>
                       <div className="input-group">
@@ -186,7 +188,9 @@ class Competitor extends Component {
                   </div>
                 </div>
                 <div className="card mt-2 mx-auto" style={{ maxWidth: 500 }}>
-                  <div className="card-header">Historiek</div>
+                  <div className="card-header">
+                    Historiek van {this.props.competitor.name}
+                  </div>
                   <div className="card-body">
                     <div className="list-group list-group-flush">
                       {this.props.logs.sort(this.compareDate).map(log => (

@@ -58,8 +58,6 @@ class App extends Component {
           competitors={this.state.competitors}
           onAddCompetitor={this.handleAddCompetitor}
         />
-
-        <h2 className="mt-2">Scorebord</h2>
         <TableCompetitors
           competitors={this.state.competitors}
           onDeleteLogCompetitor={(name, id) =>

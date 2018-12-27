@@ -16,10 +16,10 @@ class Log extends Component {
             </span>
           </span>
         </h5>
-        <p>
+        <p class="text-muted">
           <span>
             {this.props.log.date.format("Humm")}&nbsp;
-            <small>{this.props.log.date.format("D MMMM")}</small>
+            <small>{this.props.log.date.format("D MMM")}</small>
           </span>
           <button
             className="btn btn-link btn-sm float-right"
