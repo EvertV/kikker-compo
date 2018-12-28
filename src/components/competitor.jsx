@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Log from "./log";
 import * as moment from "moment";
 import Octicon from "react-octicon";
+import Modal from "react-bootstrap4-modal";
 
 class Competitor extends Component {
   state = {
@@ -10,16 +11,24 @@ class Competitor extends Component {
     showLogCompetitor: false,
     isActiveRow: false,
     newLogAmount: "",
-    newLogReason: ""
+    newLogReason: "",
+    showDeleteModal: false
   };
 
   render() {
+    const {
+      competitor,
+      onCalculatePointsFromLogs,
+      logs,
+      onDeleteLog
+    } = this.props; // argument destruction
+
     moment.locale("nl-be");
     return (
       <React.Fragment>
         <tr className={this.state.isActiveRow ? "table-light" : ""}>
-          <td>{this.props.competitor.name}</td>
-          <td>{this.props.onCalculatePointsFromLogs(this.props.logs)}</td>
+          <td>{competitor.name}</td>
+          <td>{onCalculatePointsFromLogs(logs)}</td>
           <td>
             <button
               className={this.getShowEditCompetitorClasses()}
@@ -54,27 +63,23 @@ class Competitor extends Component {
                     <p>
                       Naam
                       <br />
-                      <strong>{this.props.competitor.name}</strong>
+                      <strong>{competitor.name}</strong>
                     </p>
                     <p>
                       Kikkerpunten
                       <br />
-                      <strong>
-                        {this.props.onCalculatePointsFromLogs(this.props.logs)}
-                      </strong>
+                      <strong>{onCalculatePointsFromLogs(logs)}</strong>
                     </p>
                     <p>
                       Aantal logs
                       <br />
-                      <strong>{this.props.logs.length}</strong>
+                      <strong>{logs.length}</strong>
                     </p>
                     <p>
                       Aangemaakt
                       <br />
                       <strong>
-                        {this.props.competitor.dateAdded.format(
-                          "D/MM/YY, H:mm:ss"
-                        )}
+                        {competitor.dateAdded.format("D/MM/YY, H:mm:ss")}
                       </strong>
                     </p>
                   </div>
@@ -115,12 +120,12 @@ class Competitor extends Component {
                     <br />
                     <form
                       className="form"
-                      onSubmit={this.handleDeleteCompetitor}
+                      onSubmit={this.handleShowDeleteModal}
                     >
                       <div className="form-group">
                         <button type="submit" className="btn btn-secondary">
                           <Octicon name="trashcan" />
-                          &nbsp;Verwijder {this.props.competitor.name}
+                          &nbsp;Verwijder {competitor.name}
                         </button>
                       </div>
                     </form>
@@ -143,7 +148,7 @@ class Competitor extends Component {
               <div className="col-sm">
                 <div className="card">
                   <div className="card-header">
-                    Kikkerpunten voor {this.props.competitor.name} toevoegen
+                    Kikkerpunten voor {competitor.name} toevoegen
                   </div>
                   <div className="card-body">
                     <form onSubmit={this.onAddLogHelper}>
@@ -154,11 +159,15 @@ class Competitor extends Component {
                         <input
                           type="text"
                           className="form-control new-log-reason-input"
-                          id="inputName"
+                          id="inputNewLogReason"
                           placeholder="Geef een reden"
                           autoComplete="off"
                           value={this.state.newLogReason}
                           onChange={this.handleNewLogReasonChange}
+                          onKeyDown={this.handleEnter}
+                          ref={input => {
+                            this.inputNewLogReason = input;
+                          }}
                         />
                         <span className="input-group-btn" />
                         <label htmlFor="inputNewLogAmount" className="sr-only">
@@ -173,6 +182,9 @@ class Competitor extends Component {
                           style={{ maxWidth: 75 }}
                           value={this.state.newLogAmount}
                           onChange={this.handleNewLogAmountChange}
+                          ref={input => {
+                            this.inputNewLogAmount = input;
+                          }}
                         />
                         <span className="input-group-append">
                           <button type="submit" className="btn btn-primary">
@@ -187,20 +199,21 @@ class Competitor extends Component {
                     </form>
                   </div>
                 </div>
-                <div className="card mt-2 mx-auto" style={{ maxWidth: 500 }}>
+                <div className="card mt-2">
                   <div className="card-header">
-                    Historiek van {this.props.competitor.name}
+                    Historiek van {competitor.name}
                   </div>
                   <div className="card-body">
-                    <div className="list-group list-group-flush">
-                      {this.props.logs.sort(this.compareDate).map(log => (
+                    <div
+                      className="list-group list-group-flush mx-auto"
+                      style={{ maxWidth: 500 }}
+                    >
+                      {logs.sort(this.compareDate).map(log => (
                         <Log
                           key={log.id}
                           log={log}
-                          name={this.props.competitor.name}
-                          onDeleteLog={(name, id) =>
-                            this.props.onDeleteLog(name, id)
-                          }
+                          name={competitor.name}
+                          onDeleteLog={(name, id) => onDeleteLog(name, id)}
                         />
                       ))}
                     </div>
@@ -210,6 +223,41 @@ class Competitor extends Component {
             </div>
           </td>
         </tr>
+
+        <Modal
+          visible={this.state.showDeleteModal}
+          onClickBackdrop={this.handleCancel}
+        >
+          <div className="modal-header">
+            <h5 className="modal-title">Ben je zeker?</h5>
+          </div>
+          <div className="modal-body">
+            <p>
+              Wil je <strong>{competitor.name}</strong> verwijderen?
+            </p>
+            <p className="text-muted">
+              Het verwijderen van {competitor.name} zorgt ervoor dat de{" "}
+              <strong>volledige historiek</strong> van {competitor.name} zal
+              verwijderd worden.
+            </p>
+          </div>
+          <div className="modal-footer">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={this.handleCancelModal}
+            >
+              Annuleren
+            </button>
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={this.onDeleteCompetitorHelper}
+            >
+              Verwijderen
+            </button>
+          </div>
+        </Modal>
       </React.Fragment>
     );
   }
@@ -225,7 +273,25 @@ class Competitor extends Component {
     }
     return comparison;
   }
-
+  handleShowDeleteModal = e => {
+    e.preventDefault();
+    this.setState({ showDeleteModal: true });
+  };
+  handleCancelModal = () => {
+    this.setState({ showDeleteModal: false });
+  };
+  onDeleteCompetitorHelper = () => {
+    this.setState({ showDeleteModal: false });
+    this.props.onDeleteCompetitor(this.props.competitor.name);
+  };
+  handleEnter(event) {
+    if (event.keyCode === 13) {
+      const form = event.target.form;
+      const index = Array.prototype.indexOf.call(form, event.target);
+      form.elements[index + 1].focus();
+      event.preventDefault();
+    }
+  }
   handleNameChange = e => {
     this.setState({ newName: e.target.value });
   };
@@ -238,15 +304,20 @@ class Competitor extends Component {
 
   onAddLogHelper = e => {
     e.preventDefault();
-    this.props.onAddLog(
-      this.props.competitor.name,
-      this.state.newLogAmount,
-      this.state.newLogReason
-    );
-    this.setState({
-      newLogAmount: "",
-      newLogReason: ""
-    });
+    if (
+      this.props.onAddLog(
+        this.props.competitor.name,
+        this.state.newLogAmount,
+        this.state.newLogReason
+      )
+    ) {
+      this.setState({
+        newLogAmount: "",
+        newLogReason: ""
+      });
+    }
+
+    this.inputNewLogReason.focus();
   };
 
   onUpdateCompetitorName = e => {
@@ -256,11 +327,6 @@ class Competitor extends Component {
       this.state.newName
     );
     this.handleShowEditCompetitor();
-  };
-
-  handleDeleteCompetitor = e => {
-    e.preventDefault();
-    this.props.onDeleteCompetitor(this.props.competitor.name);
   };
 
   handleShowEditCompetitor = () => {

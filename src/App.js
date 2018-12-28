@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./App.css";
 import TableCompetitors from "./components/tableCompetitors";
 import ManageCompetitors from "./components/manageCompetitors";
 import * as moment from "moment";
@@ -77,6 +76,12 @@ class App extends Component {
       </React.Fragment>
     );
   }
+  confirmed() {
+    console.log("confirmed");
+  }
+  cancelled() {
+    console.log("cancelled");
+  }
   handleAddCompetitor = name => {
     if (
       name.trim() !== "" &&
@@ -134,26 +139,30 @@ class App extends Component {
     }));
   };
   handleAddLogCompetitor = (name, amount, reason) => {
-    if (reason && reason.length < 150 && amount !== 0 && amount !== "") {
-      var competitors = this.state.competitors;
-      competitors.forEach(e => {
-        if (e.name === name) {
-          e.logs = [
-            ...e.logs,
-            {
-              date: moment(),
-              reason: reason,
-              id: name + "&&" + moment().millisecond(),
-              amount: parseInt(amount)
-            }
-          ];
-        }
-      });
-
-      this.setState(prevState => ({
-        competitors: competitors
-      }));
+    if (amount !== "") {
+      amount = parseInt(amount);
+      if (reason && reason.length < 150 && amount !== 0) {
+        var competitors = this.state.competitors;
+        competitors.forEach(e => {
+          if (e.name === name) {
+            e.logs = [
+              ...e.logs,
+              {
+                date: moment(),
+                reason: reason,
+                id: name + "&&" + moment().millisecond(),
+                amount: parseInt(amount)
+              }
+            ];
+          }
+        });
+        this.setState(prevState => ({
+          competitors: competitors
+        }));
+        return true;
+      }
     }
+    return false;
   };
   handleCalculatePointsFromLogs = logArray => {
     return logArray.reduce(function(totalAmount, log) {
