@@ -68,9 +68,15 @@ class Competitor extends Component {
               <div className="col-sm">
                 <div className="card mx-auto" style={{ maxWidth: 500 }}>
                   <div className="card-body">
-                    <h5 class="card-title">
-                      Kikkerpunten voor {competitor.name} toevoegen
-                    </h5>
+                    <h4 className="card-title">
+                      {competitor.name}{" "}
+                      <span className="float-right">
+                        <small className="d-none d-sm-inline">Totaal: </small>
+                        <span className="badge badge-pill badge-info">
+                          {onCalculatePointsFromLogs(logs)}
+                        </span>
+                      </span>
+                    </h4>
                     <form onSubmit={this.onAddLogHelper}>
                       <div className="input-group">
                         <label htmlFor="inputNewLogReason" className="sr-only">

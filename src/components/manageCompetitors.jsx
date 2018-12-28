@@ -15,7 +15,7 @@ class ManageCompetitors extends Component {
             className={this.getShowAddCompetitorClasses()}
             onClick={this.handleShowAddCompetitor}
           >
-            <Octicon name="person" />
+            <Octicon name={this.state.showAddCompetitor ? "x" : "person"} />
             &nbsp;Nieuwe deelnemer
           </button>
         </div>

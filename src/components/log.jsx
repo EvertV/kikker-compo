@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import * as moment from "moment";
 import Octicon from "react-octicon";
 import Modal from "react-bootstrap4-modal";
+require("moment/locale/nl-be.js");
 
 class Log extends Component {
   state = {
     showDeleteModal: false
   };
   render() {
-    moment.locale("nl-be");
     const { log, name, displayMode } = this.props;
     return (
       <div className="list-group-item">
@@ -33,8 +32,14 @@ class Log extends Component {
         </p>
         <p>
           <span className="text-muted font-weight-normal">
-            {log.date.format("Humm")}&nbsp;
-            <small className="font-weight-lighter">
+            {displayMode ? log.date.fromNow() : log.date.format("Humm")}&nbsp;
+            <small
+              className={
+                displayMode
+                  ? "font-weight-lighter d-none"
+                  : "font-weight-lighter"
+              }
+            >
               {log.date.format("D MMM")}
             </small>
           </span>
@@ -87,7 +92,7 @@ class Log extends Component {
   getLabelClasses() {
     return (
       "badge badge-pill badge-" +
-      (this.props.log.amount > 0 ? "dark" : "danger")
+      (this.props.log.amount > 0 ? "secondary" : "danger")
     );
   }
   handleShowDeleteModal = () => {
