@@ -66,11 +66,11 @@ class Competitor extends Component {
           >
             <div className="row">
               <div className="col-sm">
-                <div className="card">
-                  <div className="card-header">
-                    Kikkerpunten voor {competitor.name} toevoegen
-                  </div>
+                <div className="card mx-auto" style={{ maxWidth: 500 }}>
                   <div className="card-body">
+                    <h5 class="card-title">
+                      Kikkerpunten voor {competitor.name} toevoegen
+                    </h5>
                     <form onSubmit={this.onAddLogHelper}>
                       <div className="input-group">
                         <label htmlFor="inputNewLogReason" className="sr-only">
@@ -118,29 +118,18 @@ class Competitor extends Component {
                       </small>
                     </form>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-sm">
-                <div className="card mt-2">
-                  <div className="card-header">
-                    Historiek van {competitor.name}
-                  </div>
-                  <div className="card-body">
-                    <div
-                      className="list-group list-group-flush mx-auto"
-                      style={{ maxWidth: 500 }}
-                    >
-                      {logs.sort(this.compareDate).map(log => (
-                        <Log
-                          key={log.id}
-                          log={log}
-                          name={competitor.name}
-                          onDeleteLog={(name, id) => onDeleteLog(name, id)}
-                        />
-                      ))}
-                    </div>
+                  <div
+                    className="list-group list-group-flush"
+                    style={{ maxWidth: 500 }}
+                  >
+                    {logs.sort(this.compareDate).map(log => (
+                      <Log
+                        key={log.id}
+                        log={log}
+                        name={competitor.name}
+                        onDeleteLog={(name, id) => onDeleteLog(name, id)}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>

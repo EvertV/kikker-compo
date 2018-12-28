@@ -16,12 +16,7 @@ class Log extends Component {
           <big>
             {log.reason + " "}
             <span className="float-right">
-              <small
-                style={{
-                  display: displayMode ? "none" : "inline-block"
-                }}
-                className="d-none d-sm-inline"
-              >
+              <small className={displayMode ? "d-none" : "d-none d-sm-inline"}>
                 Punten:&nbsp;
               </small>
               <span className={this.getLabelClasses()}>{log.amount}</span>
@@ -29,7 +24,7 @@ class Log extends Component {
           </big>
         </p>
         <p
-          className="lead float-right"
+          className="lead"
           style={{
             display: displayMode ? "block" : "none"
           }}
