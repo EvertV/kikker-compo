@@ -20,8 +20,10 @@
   cursor: inherit;
   background-color: white;
 }
-
 .table td > p:first-child,
 .table th {
   text-align: center;
+}
+.octicon {
+  padding-left: 3px;
 }

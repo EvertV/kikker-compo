@@ -186,24 +186,8 @@ class App extends Component {
     }, 0);
   };
 
-  handleShowEditCompetitor = name => {
-    var competitors = this.state.competitors;
-    competitors.forEach(e => {
-      if (e.name === name) {
-        e.showEditCompetitor = !e.showEditCompetitor;
-        e.showLogCompetitor = false;
-      } else {
-        e.showEditCompetitor = false;
-        e.showLogCompetitor = false;
-      }
-      return e;
-    });
-
-    this.setState({ competitors });
-  };
-
   handleShowLogCompetitor = name => {
-    var competitors = this.state.competitors;
+    var competitors = this.state.competitors.slice(0);
     competitors.map(e => {
       if (e.name === name) {
         e.showEditCompetitor = false;

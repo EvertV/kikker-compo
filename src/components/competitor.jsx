@@ -19,7 +19,6 @@ class Competitor extends Component {
       onCalculatePointsFromLogs,
       logs,
       onDeleteLog,
-      onShowEditCompetitor,
       onShowLogCompetitor
     } = this.props; // argument destruction
 
@@ -33,16 +32,24 @@ class Competitor extends Component {
           <td>
             <p>
               {onCalculatePointsFromLogs(logs)}
-              <span
-                className="float-right"
-                style={{
-                  visibility: competitor.showLogCompetitor
-                    ? "visible"
-                    : "hidden"
-                }}
-              >
+              <span className="float-right">
                 <button className={this.getShowLogCompetitorClasses()}>
-                  <Octicon name="x" />
+                  <Octicon
+                    name="x"
+                    style={{
+                      display: competitor.showLogCompetitor
+                        ? "inline-block"
+                        : "none"
+                    }}
+                  />
+                  <Octicon
+                    name="pencil"
+                    style={{
+                      display: competitor.showLogCompetitor
+                        ? "none"
+                        : "inline-block"
+                    }}
+                  />
                 </button>
               </span>
             </p>
@@ -356,22 +363,11 @@ class Competitor extends Component {
     this.props.onShowEditCompetitor(this.props.competitor.name);
   };
 
-  getShowEditCompetitorClasses = () => {
-    return this.getShowButtonClasses(
-      this.props.competitor.showEditCompetitor,
-      "link"
-    );
-  };
   getShowLogCompetitorClasses = () => {
-    return this.getShowButtonClasses(
-      this.props.competitor.showLogCompetitor,
-      "primary"
-    );
-  };
-  getShowButtonClasses = (state, style) => {
-    const classes = "btn btn-" + style + " btn-sm ";
-    return classes;
-    //return state ? classes + "active" : classes;
+    const classes = "btn btn-sm btn-";
+    return this.props.competitor.showLogCompetitor
+      ? classes + "outline-danger"
+      : classes + "outline-info";
   };
 }
 
