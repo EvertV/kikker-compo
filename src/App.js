@@ -10,8 +10,7 @@ class App extends Component {
       {
         name: "Mike",
         dateAdded: moment(),
-        showEditCompetitor: false,
-        showLogCompetitor: false,
+        showDetailsCompetitor: false,
         logs: [
           {
             date: moment(),
@@ -24,8 +23,7 @@ class App extends Component {
       {
         name: "Ken",
         dateAdded: moment(),
-        showEditCompetitor: false,
-        showLogCompetitor: false,
+        showDetailsCompetitor: false,
         logs: [
           {
             date: moment(),
@@ -38,8 +36,7 @@ class App extends Component {
       {
         name: "Sieger",
         dateAdded: moment(),
-        showEditCompetitor: false,
-        showLogCompetitor: false,
+        showDetailsCompetitor: false,
         logs: [
           {
             date: moment(),
@@ -54,7 +51,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="page-header text-center">
+        <div className="mt-2 page-header text-center">
           <h1 className="display-4">
             Kikker&nbsp;Compo
             <p className="text-muted lead">Gateway&nbsp;Gaming</p>
@@ -81,8 +78,9 @@ class App extends Component {
             onCalculatePointsFromLogs={logArray =>
               this.handleCalculatePointsFromLogs(logArray)
             }
-            onShowEditCompetitor={name => this.handleShowEditCompetitor(name)}
-            onShowLogCompetitor={name => this.handleShowLogCompetitor(name)}
+            onShowDetailsCompetitor={name =>
+              this.handleShowDetailsCompetitor(name)
+            }
           />
         </div>
       </React.Fragment>
@@ -108,6 +106,7 @@ class App extends Component {
           {
             name: name,
             dateAdded: moment(),
+            showDetailsCompetitor: false,
             logs: [
               {
                 date: moment(),
@@ -164,8 +163,7 @@ class App extends Component {
               {
                 date: moment(),
                 reason: reason,
-                showEditCompetitor: false,
-                showLogCompetitor: false,
+                showDetailsCompetitor: false,
                 id: name + "-log-" + moment() + "-nr-" + e.logs.length,
                 amount: parseInt(amount)
               }
@@ -186,15 +184,13 @@ class App extends Component {
     }, 0);
   };
 
-  handleShowLogCompetitor = name => {
+  handleShowDetailsCompetitor = name => {
     var competitors = this.state.competitors.slice(0);
     competitors.map(e => {
       if (e.name === name) {
-        e.showEditCompetitor = false;
-        e.showLogCompetitor = !e.showLogCompetitor;
+        e.showDetailsCompetitor = !e.showDetailsCompetitor;
       } else {
-        e.showEditCompetitor = false;
-        e.showLogCompetitor = false;
+        e.showDetailsCompetitor = false;
       }
       return e;
     });

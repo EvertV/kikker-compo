@@ -20,6 +20,7 @@ class Log extends Component {
                 style={{
                   display: displayMode ? "none" : "inline-block"
                 }}
+                className="d-none d-sm-inline"
               >
                 Punten:&nbsp;
               </small>
@@ -37,19 +38,19 @@ class Log extends Component {
         </p>
         <p>
           <span className="text-muted font-weight-normal">
-            {log.date.format("Humm")} ({log.date.format("ss\\s")})&nbsp;
+            {log.date.format("Humm")}&nbsp;
             <small className="font-weight-lighter">
               {log.date.format("D MMM")}
             </small>
           </span>
           <button
+            className="btn btn-link btn-sm float-right"
             style={{
               display: displayMode ? "none" : "inline-block"
             }}
-            className="btn btn-link btn-sm float-right"
             onClick={this.handleShowDeleteModal}
           >
-            <Octicon name="trashcan" style={{ paddingLeft: 3 }} />
+            <Octicon name="trashcan" />
           </button>
         </p>
 
@@ -62,8 +63,8 @@ class Log extends Component {
           </div>
           <div className="modal-body">
             <p>
-              Verwijder <strong>{log.amount}</strong> kikkerpunten van{" "}
-              <strong>{name}</strong>?{" "}
+              <strong>{log.amount}</strong> kikkerpunten van{" "}
+              <strong>{name}</strong> verwijderen?
             </p>
             <p className="text-muted">Reden: {log.reason}</p>
           </div>

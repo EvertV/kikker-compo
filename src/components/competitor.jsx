@@ -19,13 +19,13 @@ class Competitor extends Component {
       onCalculatePointsFromLogs,
       logs,
       onDeleteLog,
-      onShowLogCompetitor
+      onShowDetailsCompetitor
     } = this.props; // argument destruction
 
     moment.locale("nl-be");
     return (
       <React.Fragment>
-        <tr onClick={() => onShowLogCompetitor(competitor.name)}>
+        <tr onClick={() => onShowDetailsCompetitor(competitor.name)}>
           <td>
             <p>{competitor.name}</p>
           </td>
@@ -33,11 +33,11 @@ class Competitor extends Component {
             <p>
               {onCalculatePointsFromLogs(logs)}
               <span className="float-right">
-                <button className={this.getShowLogCompetitorClasses()}>
+                <button className={this.getShowDetailsCompetitorClasses()}>
                   <Octicon
                     name="x"
                     style={{
-                      display: competitor.showLogCompetitor
+                      display: competitor.showDetailsCompetitor
                         ? "inline-block"
                         : "none"
                     }}
@@ -45,7 +45,7 @@ class Competitor extends Component {
                   <Octicon
                     name="pencil"
                     style={{
-                      display: competitor.showLogCompetitor
+                      display: competitor.showDetailsCompetitor
                         ? "none"
                         : "inline-block"
                     }}
@@ -59,7 +59,7 @@ class Competitor extends Component {
           <td
             colSpan="3"
             style={{
-              display: competitor.showLogCompetitor ? "table-cell" : "none",
+              display: competitor.showDetailsCompetitor ? "table-cell" : "none",
               paddingBottom: 15,
               borderTop: this.state.isActiveRow ? "0" : "1px solid #ddd"
             }}
@@ -193,7 +193,7 @@ class Competitor extends Component {
                   </div>
                 </div>
                 <div className="card">
-                  <div className="card-header">Wijzig details</div>
+                  <div className="card-header">Bewerk {competitor.name}</div>
                   <div className="card-body">
                     <form
                       className="form-inline"
@@ -360,12 +360,11 @@ class Competitor extends Component {
       this.props.competitor.name,
       this.state.newName
     );
-    this.props.onShowEditCompetitor(this.props.competitor.name);
   };
 
-  getShowLogCompetitorClasses = () => {
+  getShowDetailsCompetitorClasses = () => {
     const classes = "btn btn-sm btn-";
-    return this.props.competitor.showLogCompetitor
+    return this.props.competitor.showDetailsCompetitor
       ? classes + "outline-danger"
       : classes + "outline-info";
   };
