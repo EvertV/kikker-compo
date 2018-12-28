@@ -31,7 +31,10 @@ class Log extends Component {
           {log.competitorName}
         </p>
         <p>
-          <span className="text-muted font-weight-normal">
+          <span
+            className="text-muted font-weight-normal"
+            title={log.date.format("D MMM 'YY, H:mm:ss")}
+          >
             {displayMode ? log.date.fromNow() : log.date.format("Humm")}&nbsp;
             <small
               className={

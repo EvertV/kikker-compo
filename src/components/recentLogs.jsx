@@ -43,7 +43,7 @@ class RecentLogs extends Component {
 
     return (
       <div
-        className="card mt-2 mb-2 float-right d-none d-xl-block"
+        className="card mt-2 mb-2 float-right d-none d-xxl-block"
         style={{ width: 320 }}
       >
         <div style={{ minWidth: 100 + "%" }}>

@@ -27,3 +27,11 @@
 .octicon {
   padding-left: 3px;
 }
+.d-xxl-block {
+  display: none;
+}
+@media screen and (min-width: 1780px) {
+  .d-xxl-block {
+    display: block !important;
+  }
+}
