@@ -7,9 +7,6 @@ import Modal from "react-bootstrap4-modal";
 class Competitor extends Component {
   state = {
     newName: this.props.competitor.name,
-    showEditCompetitor: false,
-    showLogCompetitor: false,
-    isActiveRow: false,
     newLogAmount: "",
     newLogReason: "",
     showDeleteModal: false
@@ -20,37 +17,39 @@ class Competitor extends Component {
       competitor,
       onCalculatePointsFromLogs,
       logs,
-      onDeleteLog
+      onDeleteLog,
+      onShowEditCompetitor,
+      onShowLogCompetitor
     } = this.props; // argument destruction
 
     moment.locale("nl-be");
     return (
       <React.Fragment>
-        <tr className={this.state.isActiveRow ? "table-light" : ""}>
+        <tr>
           <td>{competitor.name}</td>
           <td>{onCalculatePointsFromLogs(logs)}</td>
           <td>
             <button
               className={this.getShowEditCompetitorClasses()}
-              onClick={this.handleShowEditCompetitor}
+              onClick={() => onShowEditCompetitor(competitor.name)}
             >
               <Octicon name="pencil" />
             </button>
             &nbsp;
             <button
               className={this.getShowLogCompetitorClasses()}
-              onClick={this.handleShowLogCompetitor}
+              onClick={() => onShowLogCompetitor(competitor.name)}
             >
               <Octicon name="tasklist" />
             </button>
           </td>
         </tr>
-        <tr className="table-light">
+        <tr>
           <td
             colSpan="3"
             className=""
             style={{
-              display: this.state.showEditCompetitor ? "table-cell" : "none",
+              display: competitor.showEditCompetitor ? "table-cell" : "none",
               paddingBottom: 15,
               borderTop: this.state.isActiveRow ? "0" : "1px solid #ddd"
             }}
@@ -135,11 +134,11 @@ class Competitor extends Component {
             </div>
           </td>
         </tr>
-        <tr className="table-light">
+        <tr>
           <td
             colSpan="3"
             style={{
-              display: this.state.showLogCompetitor ? "table-cell" : "none",
+              display: competitor.showLogCompetitor ? "table-cell" : "none",
               paddingBottom: 15,
               borderTop: this.state.isActiveRow ? "0" : "1px solid #ddd"
             }}
@@ -221,43 +220,42 @@ class Competitor extends Component {
                 </div>
               </div>
             </div>
+            <Modal
+              visible={this.state.showDeleteModal}
+              onClickBackdrop={this.handleCancelModal}
+            >
+              <div className="modal-header">
+                <h5 className="modal-title">Ben je zeker?</h5>
+              </div>
+              <div className="modal-body">
+                <p>
+                  Wil je <strong>{competitor.name}</strong> verwijderen?
+                </p>
+                <p className="text-muted">
+                  Het verwijderen van {competitor.name} zorgt ervoor dat de{" "}
+                  <strong>volledige historiek</strong> van {competitor.name} zal
+                  verwijderd worden.
+                </p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={this.handleCancelModal}
+                >
+                  Annuleren
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={this.onDeleteCompetitorHelper}
+                >
+                  Verwijderen
+                </button>
+              </div>
+            </Modal>
           </td>
         </tr>
-
-        <Modal
-          visible={this.state.showDeleteModal}
-          onClickBackdrop={this.handleCancel}
-        >
-          <div className="modal-header">
-            <h5 className="modal-title">Ben je zeker?</h5>
-          </div>
-          <div className="modal-body">
-            <p>
-              Wil je <strong>{competitor.name}</strong> verwijderen?
-            </p>
-            <p className="text-muted">
-              Het verwijderen van {competitor.name} zorgt ervoor dat de{" "}
-              <strong>volledige historiek</strong> van {competitor.name} zal
-              verwijderd worden.
-            </p>
-          </div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={this.handleCancelModal}
-            >
-              Annuleren
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={this.onDeleteCompetitorHelper}
-            >
-              Verwijderen
-            </button>
-          </div>
-        </Modal>
       </React.Fragment>
     );
   }
@@ -326,34 +324,18 @@ class Competitor extends Component {
       this.props.competitor.name,
       this.state.newName
     );
-    this.handleShowEditCompetitor();
-  };
-
-  handleShowEditCompetitor = () => {
-    this.setState(prevState => ({
-      showEditCompetitor: !prevState.showEditCompetitor,
-      showLogCompetitor: false,
-      isActiveRow: !prevState.showEditCompetitor ? true : false
-    }));
-  };
-
-  handleShowLogCompetitor = () => {
-    this.setState(prevState => ({
-      showEditCompetitor: false,
-      showLogCompetitor: !prevState.showLogCompetitor,
-      isActiveRow: !prevState.showLogCompetitor ? true : false
-    }));
+    this.props.onShowEditCompetitor(this.props.competitor.name);
   };
 
   getShowEditCompetitorClasses = () => {
     return this.getShowButtonClasses(
-      this.state.showEditCompetitor,
+      this.props.competitor.showEditCompetitor,
       "outline-secondary"
     );
   };
   getShowLogCompetitorClasses = () => {
     return this.getShowButtonClasses(
-      this.state.showLogCompetitor,
+      this.props.competitor.showLogCompetitor,
       "outline-info"
     );
   };

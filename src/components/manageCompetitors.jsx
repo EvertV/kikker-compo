@@ -40,6 +40,7 @@ class ManageCompetitors extends Component {
                 autoComplete="off"
                 onChange={this.handleNameChange}
                 value={this.state.newCompetitorName}
+                onKeyDown={this.handleKeyDown}
                 ref={input => {
                   this.inputName = input && input.focus();
                 }}
@@ -67,11 +68,16 @@ class ManageCompetitors extends Component {
       showAddCompetitor: !prevState.showAddCompetitor
     }));
   };
-
+  handleKeyDown = event => {
+    if (event.keyCode === 27) {
+      this.handleShowAddCompetitor();
+    }
+  };
   onAddCompetitorHelper = e => {
     e.preventDefault();
-    this.setState({ newCompetitorName: "" });
-    this.props.onAddCompetitor(this.state.newCompetitorName);
+    if (this.props.onAddCompetitor(this.state.newCompetitorName)) {
+      this.setState({ newCompetitorName: "" });
+    }
   };
 
   getShowAddCompetitorClasses = () => {

@@ -32,6 +32,12 @@ class TableCompetitors extends Component {
                 onCalculatePointsFromLogs={logArray =>
                   this.props.onCalculatePointsFromLogs(logArray)
                 }
+                onShowEditCompetitor={name =>
+                  this.props.onShowEditCompetitor(name)
+                }
+                onShowLogCompetitor={name =>
+                  this.props.onShowLogCompetitor(name)
+                }
               />
             ))}
           </tbody>

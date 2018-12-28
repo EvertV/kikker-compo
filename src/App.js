@@ -9,6 +9,8 @@ class App extends Component {
       {
         name: "Mike",
         dateAdded: moment(),
+        showEditCompetitor: false,
+        showLogCompetitor: false,
         logs: [
           {
             date: moment(),
@@ -21,6 +23,8 @@ class App extends Component {
       {
         name: "Ken",
         dateAdded: moment(),
+        showEditCompetitor: false,
+        showLogCompetitor: false,
         logs: [
           {
             date: moment(),
@@ -33,6 +37,8 @@ class App extends Component {
       {
         name: "Sieger",
         dateAdded: moment(),
+        showEditCompetitor: false,
+        showLogCompetitor: false,
         logs: [
           {
             date: moment(),
@@ -72,6 +78,8 @@ class App extends Component {
           onCalculatePointsFromLogs={logArray =>
             this.handleCalculatePointsFromLogs(logArray)
           }
+          onShowEditCompetitor={name => this.handleShowEditCompetitor(name)}
+          onShowLogCompetitor={name => this.handleShowLogCompetitor(name)}
         />
       </React.Fragment>
     );
@@ -107,7 +115,9 @@ class App extends Component {
           }
         ]
       }));
+      return true;
     }
+    return false;
   };
   handleDeleteLogCompetitor = (name, id) => {
     var comps = this.state.competitors;
@@ -150,6 +160,8 @@ class App extends Component {
               {
                 date: moment(),
                 reason: reason,
+                showEditCompetitor: false,
+                showLogCompetitor: false,
                 id: name + "&&" + moment().millisecond(),
                 amount: parseInt(amount)
               }
@@ -168,6 +180,38 @@ class App extends Component {
     return logArray.reduce(function(totalAmount, log) {
       return totalAmount + log.amount;
     }, 0);
+  };
+
+  handleShowEditCompetitor = name => {
+    var competitors = this.state.competitors;
+    competitors.forEach(e => {
+      if (e.name === name) {
+        e.showEditCompetitor = !e.showEditCompetitor;
+        e.showLogCompetitor = false;
+      } else {
+        e.showEditCompetitor = false;
+        e.showLogCompetitor = false;
+      }
+      return e;
+    });
+
+    this.setState({ competitors });
+  };
+
+  handleShowLogCompetitor = name => {
+    var competitors = this.state.competitors;
+    competitors.map(e => {
+      if (e.name === name) {
+        e.showEditCompetitor = false;
+        e.showLogCompetitor = !e.showLogCompetitor;
+      } else {
+        e.showEditCompetitor = false;
+        e.showLogCompetitor = false;
+      }
+      return e;
+    });
+
+    this.setState({ competitors });
   };
 }
 
