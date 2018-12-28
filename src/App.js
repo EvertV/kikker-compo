@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import TableCompetitors from "./components/tableCompetitors";
 import ManageCompetitors from "./components/manageCompetitors";
+import RecentLogs from "./components/recentLogs";
 import * as moment from "moment";
 
 class App extends Component {
@@ -28,7 +29,7 @@ class App extends Component {
         logs: [
           {
             date: moment(),
-            id: "Mike&&" + moment().millisecond(),
+            id: "Ken&&" + moment().millisecond(),
             amount: 15,
             reason: "Kikkeren in de stoel"
           }
@@ -59,28 +60,31 @@ class App extends Component {
             <p className="text-muted lead">Gateway&nbsp;Gaming</p>
           </h1>
         </div>
-        <ManageCompetitors
-          competitors={this.state.competitors}
-          onAddCompetitor={this.handleAddCompetitor}
-        />
-        <TableCompetitors
-          competitors={this.state.competitors}
-          onDeleteLogCompetitor={(name, id) =>
-            this.handleDeleteLogCompetitor(name, id)
-          }
-          onDeleteCompetitor={name => this.handleDeleteCompetitor(name)}
-          onUpdateCompetitorName={(oldName, newName) =>
-            this.handleUpdateCompetitorName(oldName, newName)
-          }
-          onAddLogCompetitor={(name, amount, reason) =>
-            this.handleAddLogCompetitor(name, amount, reason)
-          }
-          onCalculatePointsFromLogs={logArray =>
-            this.handleCalculatePointsFromLogs(logArray)
-          }
-          onShowEditCompetitor={name => this.handleShowEditCompetitor(name)}
-          onShowLogCompetitor={name => this.handleShowLogCompetitor(name)}
-        />
+        <RecentLogs competitors={this.state.competitors} />
+        <div className="container">
+          <ManageCompetitors
+            competitors={this.state.competitors}
+            onAddCompetitor={this.handleAddCompetitor}
+          />
+          <TableCompetitors
+            competitors={this.state.competitors}
+            onDeleteLogCompetitor={(name, id) =>
+              this.handleDeleteLogCompetitor(name, id)
+            }
+            onDeleteCompetitor={name => this.handleDeleteCompetitor(name)}
+            onUpdateCompetitorName={(oldName, newName) =>
+              this.handleUpdateCompetitorName(oldName, newName)
+            }
+            onAddLogCompetitor={(name, amount, reason) =>
+              this.handleAddLogCompetitor(name, amount, reason)
+            }
+            onCalculatePointsFromLogs={logArray =>
+              this.handleCalculatePointsFromLogs(logArray)
+            }
+            onShowEditCompetitor={name => this.handleShowEditCompetitor(name)}
+            onShowLogCompetitor={name => this.handleShowLogCompetitor(name)}
+          />
+        </div>
       </React.Fragment>
     );
   }
@@ -162,7 +166,7 @@ class App extends Component {
                 reason: reason,
                 showEditCompetitor: false,
                 showLogCompetitor: false,
-                id: name + "&&" + moment().millisecond(),
+                id: name + "-log-" + moment() + "-nr-" + e.logs.length,
                 amount: parseInt(amount)
               }
             ];

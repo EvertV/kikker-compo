@@ -9,7 +9,7 @@ class Log extends Component {
   };
   render() {
     moment.locale("nl-be");
-    const { log, name } = this.props;
+    const { log, name, displayMode } = this.props;
     return (
       <div className="list-group-item">
         <p>
@@ -21,14 +21,25 @@ class Log extends Component {
             </span>
           </big>
         </p>
+        <p
+          className="lead float-right"
+          style={{
+            display: displayMode ? "block" : "none"
+          }}
+        >
+          {log.competitorName}
+        </p>
         <p>
           <span className="text-muted font-weight-normal">
-            {log.date.format("Humm")}&nbsp;
+            {log.date.format("Humm")} ({log.date.format("ss\\s")})&nbsp;
             <small className="font-weight-lighter">
               {log.date.format("D MMM")}
             </small>
           </span>
           <button
+            style={{
+              display: displayMode ? "none" : "inline-block"
+            }}
             className="btn btn-link btn-sm float-right"
             onClick={this.handleShowDeleteModal}
           >
