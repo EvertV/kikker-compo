@@ -5,12 +5,11 @@ class TableCompetitors extends Component {
   render() {
     return (
       <div className="mt-3">
-        <table className="table">
+        <table className="table table-hover">
           <thead>
             <tr>
               <th>Naam</th>
               <th>Kikkerpunten</th>
-              <th>Acties</th>
             </tr>
           </thead>
           <tbody>

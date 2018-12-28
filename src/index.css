@@ -9,6 +9,19 @@
   word-wrap: break-word;
 }
 .input-group-prepend .btn,
-.input-group-append .btn {
+.input-group-append .btn,
+.table-hover tbody .btn {
   z-index: 1;
+}
+.table-hover tbody tr:hover {
+  cursor: pointer;
+}
+.table-hover tbody tr.fold-out:hover {
+  cursor: inherit;
+  background-color: white;
+}
+
+.table td > p:first-child,
+.table th {
+  text-align: center;
 }

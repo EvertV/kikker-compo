@@ -21,9 +21,10 @@ class ManageCompetitors extends Component {
         </div>
         <div
           style={{
-            display: this.state.showAddCompetitor ? "block" : "none"
+            display: this.state.showAddCompetitor ? "block" : "none",
+            maxWidth: 350
           }}
-          className="card text-center mt-3"
+          className="card text-center mt-3 mx-auto"
         >
           <div className="card-header">Nieuwe deelnemer toevoegen</div>
           <div className="card-body">

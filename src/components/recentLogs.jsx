@@ -42,16 +42,21 @@ class RecentLogs extends Component {
     const recentLogs = logsInOneArray.sort(this.compareDate).slice(0, 3);
 
     return (
-      <div className="card mt-2 float-right">
-        <div className="card-header">Recent verdiende kikkerpunten</div>
-        <div className="card-body">
-          <div
-            className="list-group list-group-flush mx-auto"
-            style={{ maxWidth: 500 }}
-          >
-            {recentLogs.map(log => (
-              <Log key={log.id + "display"} log={log} displayMode={true} />
-            ))}
+      <div
+        className="card mt-2 mb-2 float-right d-none d-xl-block"
+        style={{ width: 320 }}
+      >
+        <div style={{ minWidth: 100 + "%" }}>
+          <div className="card-header">Recent verdiende kikkerpunten</div>
+          <div className="card-body">
+            <div
+              className="list-group list-group-flush mx-auto"
+              style={{ maxWidth: 500 }}
+            >
+              {recentLogs.map(log => (
+                <Log key={log.id + "display"} log={log} displayMode={true} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

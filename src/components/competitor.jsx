@@ -9,7 +9,8 @@ class Competitor extends Component {
     newName: this.props.competitor.name,
     newLogAmount: "",
     newLogReason: "",
-    showDeleteModal: false
+    showDeleteModal: false,
+    showEditModal: false
   };
 
   render() {
@@ -25,116 +26,29 @@ class Competitor extends Component {
     moment.locale("nl-be");
     return (
       <React.Fragment>
-        <tr>
-          <td>{competitor.name}</td>
-          <td>{onCalculatePointsFromLogs(logs)}</td>
+        <tr onClick={() => onShowLogCompetitor(competitor.name)}>
           <td>
-            <button
-              className={this.getShowEditCompetitorClasses()}
-              onClick={() => onShowEditCompetitor(competitor.name)}
-            >
-              <Octicon name="pencil" />
-            </button>
-            &nbsp;
-            <button
-              className={this.getShowLogCompetitorClasses()}
-              onClick={() => onShowLogCompetitor(competitor.name)}
-            >
-              <Octicon name="tasklist" />
-            </button>
+            <p>{competitor.name}</p>
+          </td>
+          <td>
+            <p>
+              {onCalculatePointsFromLogs(logs)}
+              <span
+                className="float-right"
+                style={{
+                  visibility: competitor.showLogCompetitor
+                    ? "visible"
+                    : "hidden"
+                }}
+              >
+                <button className={this.getShowLogCompetitorClasses()}>
+                  <Octicon name="x" />
+                </button>
+              </span>
+            </p>
           </td>
         </tr>
-        <tr>
-          <td
-            colSpan="3"
-            className=""
-            style={{
-              display: competitor.showEditCompetitor ? "table-cell" : "none",
-              paddingBottom: 15,
-              borderTop: this.state.isActiveRow ? "0" : "1px solid #ddd"
-            }}
-          >
-            <div className="row">
-              <div className="col-sm">
-                <div className="card mb-2">
-                  <div className="card-header">Overzicht</div>
-                  <div className="card-body">
-                    <p>
-                      Naam
-                      <br />
-                      <strong>{competitor.name}</strong>
-                    </p>
-                    <p>
-                      Kikkerpunten
-                      <br />
-                      <strong>{onCalculatePointsFromLogs(logs)}</strong>
-                    </p>
-                    <p>
-                      Aantal logs
-                      <br />
-                      <strong>{logs.length}</strong>
-                    </p>
-                    <p>
-                      Aangemaakt
-                      <br />
-                      <strong>
-                        {competitor.dateAdded.format("D/MM/YY, H:mm:ss")}
-                      </strong>
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm">
-                <div className="card">
-                  <div className="card-header">Bewerk deelnemer</div>
-                  <div className="card-body">
-                    <form
-                      className="form-inline"
-                      onSubmit={this.onUpdateCompetitorName}
-                    >
-                      <div className="input-group form-group">
-                        <label htmlFor="inputName" className="sr-only">
-                          Naam
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="inputName"
-                          placeholder="Naam"
-                          autoComplete="off"
-                          value={this.state.newName}
-                          onChange={this.handleNameChange}
-                          /*ref={input => {
-                          this.inputName = input && input.focus();
-                        }}*/
-                        />
-                        <span className="input-group-append">
-                          <button type="submit" className="btn btn-primary">
-                            <Octicon name="check" />
-                            &nbsp;Naam wijzigen
-                          </button>
-                        </span>
-                      </div>
-                    </form>
-                    <br />
-                    <form
-                      className="form"
-                      onSubmit={this.handleShowDeleteModal}
-                    >
-                      <div className="form-group">
-                        <button type="submit" className="btn btn-secondary">
-                          <Octicon name="trashcan" />
-                          &nbsp;Verwijder {competitor.name}
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
+        <tr className="fold-out">
           <td
             colSpan="3"
             style={{
@@ -198,6 +112,10 @@ class Competitor extends Component {
                     </form>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm">
                 <div className="card mt-2">
                   <div className="card-header">
                     Historiek van {competitor.name}
@@ -220,9 +138,113 @@ class Competitor extends Component {
                 </div>
               </div>
             </div>
+
+            <div className="row">
+              <div className="col-sm mt-2 text-center">
+                <button
+                  className="btn btn-link btn-sm"
+                  onClick={this.handleShowEditModal}
+                >
+                  Bewerk/bekijk {competitor.name} &raquo;
+                </button>
+              </div>
+            </div>
+
+            <Modal
+              visible={this.state.showEditModal}
+              onClickBackdrop={this.handleCancelEditModal}
+            >
+              <div className="modal-header">
+                <h5 className="modal-title">Details {competitor.name}</h5>
+              </div>
+              <div className="modal-body">
+                <div className="card mb-2">
+                  <div className="card-header">Overzicht</div>
+                  <div className="card-body">
+                    <p>
+                      Naam
+                      <br />
+                      <strong>{competitor.name}</strong>
+                    </p>
+                    <p>
+                      Kikkerpunten
+                      <br />
+                      <strong>{onCalculatePointsFromLogs(logs)}</strong>
+                    </p>
+                    <p>
+                      Aantal logs
+                      <br />
+                      <strong>{logs.length}</strong>
+                    </p>
+                    <p>
+                      Aangemaakt
+                      <br />
+                      <strong>
+                        {competitor.dateAdded.format("D/MM/YY, H:mm:ss")}
+                      </strong>
+                    </p>
+                  </div>
+                </div>
+                <div className="card">
+                  <div className="card-header">Wijzig details</div>
+                  <div className="card-body">
+                    <form
+                      className="form-inline"
+                      onSubmit={this.onUpdateCompetitorName}
+                    >
+                      <div className="input-group form-group">
+                        <label htmlFor="inputName" className="sr-only">
+                          Naam
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="inputName"
+                          placeholder="Naam"
+                          autoComplete="off"
+                          value={this.state.newName}
+                          onChange={this.handleNameChange}
+                          /*ref={input => {
+                          this.inputName = input && input.focus();
+                        }}*/
+                        />
+                        <span className="input-group-append">
+                          <button type="submit" className="btn btn-primary">
+                            <Octicon name="check" />
+                            &nbsp;Naam wijzigen
+                          </button>
+                        </span>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div className="modal-footer float-left">
+                  <button
+                    type="submit"
+                    className="btn btn-danger"
+                    onClick={this.handleShowDeleteModal}
+                  >
+                    <Octicon name="trashcan" />
+                    &nbsp;Verwijder {competitor.name}
+                  </button>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="submit"
+                    className="btn btn-secondary"
+                    onClick={this.handleCancelEditModal}
+                  >
+                    <Octicon name="x" />
+                    &nbsp;Sluit
+                  </button>
+                </div>
+              </div>
+            </Modal>
+
             <Modal
               visible={this.state.showDeleteModal}
-              onClickBackdrop={this.handleCancelModal}
+              onClickBackdrop={this.handleCancelDeleteModal}
             >
               <div className="modal-header">
                 <h5 className="modal-title">Ben je zeker?</h5>
@@ -241,7 +263,7 @@ class Competitor extends Component {
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  onClick={this.handleCancelModal}
+                  onClick={this.handleCancelDeleteModal}
                 >
                   Annuleren
                 </button>
@@ -250,7 +272,8 @@ class Competitor extends Component {
                   className="btn btn-danger"
                   onClick={this.onDeleteCompetitorHelper}
                 >
-                  Verwijderen
+                  <Octicon name="trashcan" />
+                  &nbsp;Verwijderen
                 </button>
               </div>
             </Modal>
@@ -271,16 +294,22 @@ class Competitor extends Component {
     }
     return comparison;
   }
-  handleShowDeleteModal = e => {
-    e.preventDefault();
+  handleShowDeleteModal = () => {
     this.setState({ showDeleteModal: true });
   };
-  handleCancelModal = () => {
+  handleCancelDeleteModal = () => {
     this.setState({ showDeleteModal: false });
   };
   onDeleteCompetitorHelper = () => {
     this.setState({ showDeleteModal: false });
     this.props.onDeleteCompetitor(this.props.competitor.name);
+  };
+  handleShowEditModal = e => {
+    e.preventDefault();
+    this.setState({ showEditModal: true });
+  };
+  handleCancelEditModal = () => {
+    this.setState({ showEditModal: false });
   };
   handleEnter(event) {
     if (event.keyCode === 13) {
@@ -330,18 +359,19 @@ class Competitor extends Component {
   getShowEditCompetitorClasses = () => {
     return this.getShowButtonClasses(
       this.props.competitor.showEditCompetitor,
-      "outline-secondary"
+      "link"
     );
   };
   getShowLogCompetitorClasses = () => {
     return this.getShowButtonClasses(
       this.props.competitor.showLogCompetitor,
-      "outline-info"
+      "primary"
     );
   };
   getShowButtonClasses = (state, style) => {
     const classes = "btn btn-" + style + " btn-sm ";
-    return state ? classes + "active" : classes;
+    return classes;
+    //return state ? classes + "active" : classes;
   };
 }
 

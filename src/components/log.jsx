@@ -16,7 +16,13 @@ class Log extends Component {
           <big>
             {log.reason + " "}
             <span className="float-right">
-              <small>Punten:&nbsp;</small>
+              <small
+                style={{
+                  display: displayMode ? "none" : "inline-block"
+                }}
+              >
+                Punten:&nbsp;
+              </small>
               <span className={this.getLabelClasses()}>{log.amount}</span>
             </span>
           </big>
@@ -74,7 +80,8 @@ class Log extends Component {
               className="btn btn-danger"
               onClick={this.handleOk}
             >
-              Verwijderen
+              <Octicon name="trashcan" />
+              &nbsp;Verwijderen
             </button>
           </div>
         </Modal>
