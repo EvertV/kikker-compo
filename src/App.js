@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TableCompetitors from "./components/tableCompetitors";
 import ManageCompetitors from "./components/manageCompetitors";
 import RecentLogs from "./components/recentLogs";
+import PointsInfo from "./components/pointsInfo";
 import * as moment from "moment";
 import firebase from "firebase";
 
@@ -93,6 +94,7 @@ class App extends Component {
             <p className="text-muted lead">Gateway&nbsp;Gaming</p>
           </h1>
         </div>
+        <PointsInfo />
         <RecentLogs
           competitors={this.state.competitors}
           onDeleteLog={(name, id) => this.handleDeleteLogCompetitor(name, id)}
@@ -252,7 +254,6 @@ class App extends Component {
 
   handleShowDetailsCompetitor = name => {
     var competitors = this.state.competitors.slice(0);
-
     competitors.map(e => {
       if (e.name === name) {
         e.showDetailsCompetitor = !e.showDetailsCompetitor;

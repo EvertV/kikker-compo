@@ -48,14 +48,14 @@ class RecentLogs extends Component {
 
     return (
       <div
-        className="card mt-2 mb-2 float-right d-none d-xxl-block recent-logs"
+        className="card float-right d-none d-xxl-block recent-logs"
         style={{ width: 320, maxHeight: 500 }}
       >
         <div className="card-body">
           <h3 className="card-title">Recent</h3>
         </div>
         <div className="list-group list-group-flush" style={{ maxWidth: 500 }}>
-          {recentLogs.map(log => (
+          {recentLogs.sort(this.compareDate).map(log => (
             <Log
               key={log.id + "display"}
               log={log}
