@@ -7,43 +7,18 @@ import firebase from "firebase";
 
 class App extends Component {
   state = {
+    showAddCompetitor: false,
     competitors: [
       {
-        name: "Mike",
+        name: "Bezig met laden...",
         dateAdded: moment(),
         showDetailsCompetitor: false,
         logs: [
           {
             date: moment(),
-            id: "Mike&&" + moment().millisecond(),
-            amount: 10,
-            reason: "Adje"
-          }
-        ]
-      },
-      {
-        name: "Ken",
-        dateAdded: moment(),
-        showDetailsCompetitor: false,
-        logs: [
-          {
-            date: moment(),
-            id: "Ken&&" + moment().millisecond(),
-            amount: 15,
-            reason: "Kikkeren in de stoel"
-          }
-        ]
-      },
-      {
-        name: "Sieger",
-        dateAdded: moment(),
-        showDetailsCompetitor: false,
-        logs: [
-          {
-            date: moment(),
-            id: "Sieger&&" + moment().millisecond(),
-            amount: 50,
-            reason: "Nen bak gekocht"
+            id: "xdxpx3",
+            amount: 0,
+            reason: "Bezig met laden..."
           }
         ]
       }
@@ -127,6 +102,8 @@ class App extends Component {
           <ManageCompetitors
             competitors={this.state.competitors}
             onAddCompetitor={this.handleAddCompetitor}
+            onShowAddCompetitor={this.handleShowAddCompetitor}
+            showAddCompetitor={this.state.showAddCompetitor}
           />
           <TableCompetitors
             competitors={this.state.competitors}
@@ -183,7 +160,23 @@ class App extends Component {
           }
         ]
       }));
-      this.writeToDatabase();
+
+      firebase
+        .database()
+        .ref("competitors/" + name)
+        .set({
+          name,
+          dateAdded: moment().format(),
+          showDetailsCompetitor: false,
+          logs: [
+            {
+              date: moment().format(),
+              reason: "Nieuwe kikker",
+              id: name + "&&" + moment().millisecond(),
+              amount: 1
+            }
+          ]
+        });
       return true;
     }
     return false;
@@ -211,17 +204,37 @@ class App extends Component {
       .remove();
   };
   handleUpdateCompetitorName = (oldName, newName) => {
-    var comps = this.state.competitors;
-    comps.forEach(e => {
+    var competitors = this.state.competitors;
+    var newCompetitorData = {};
+    competitors.forEach(e => {
       if (e.name === oldName) {
         e.name = newName;
+        newCompetitorData = e;
       }
     });
 
-    this.setState(prevState => ({
-      competitors: comps
-    }));
-    this.writeToDatabase();
+    this.setState({ competitors });
+    firebase
+      .database()
+      .ref("competitors/" + oldName)
+      .remove();
+
+    firebase
+      .database()
+      .ref("competitors/" + newCompetitorData.name)
+      .set({
+        name: newCompetitorData.name,
+        dateAdded: newCompetitorData.dateAdded.format(),
+        showDetailsCompetitor: newCompetitorData.showDetailsCompetitor,
+        logs: newCompetitorData.logs.map(log => {
+          return {
+            date: log.date.format(),
+            id: log.id,
+            amount: log.amount,
+            reason: log.reason
+          };
+        })
+      });
   };
   handleAddLogCompetitor = (name, amount, reason) => {
     if (amount !== "") {
@@ -259,6 +272,7 @@ class App extends Component {
 
   handleShowDetailsCompetitor = name => {
     var competitors = this.state.competitors.slice(0);
+
     competitors.map(e => {
       if (e.name === name) {
         e.showDetailsCompetitor = !e.showDetailsCompetitor;
@@ -268,7 +282,19 @@ class App extends Component {
       return e;
     });
 
-    this.setState({ competitors });
+    this.setState({ competitors, showAddCompetitor: false });
+  };
+
+  handleShowAddCompetitor = () => {
+    var competitors = this.state.competitors.slice(0);
+    competitors.map(e => {
+      e.showDetailsCompetitor = false;
+      return e;
+    });
+    this.setState(prevState => ({
+      competitors,
+      showAddCompetitor: !prevState.showAddCompetitor
+    }));
   };
 }
 

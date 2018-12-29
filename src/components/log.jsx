@@ -5,10 +5,23 @@ require("moment/locale/nl-be.js");
 
 class Log extends Component {
   state = {
-    showDeleteModal: false
+    showDeleteModal: false,
+    fromNowDate: this.props.log.date.fromNow()
   };
+  componentDidMount() {
+    this.interval = setInterval(this.updateFromNowTime.bind(this), 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+  updateFromNowTime = () => {
+    this.setState({ fromNowDate: this.props.log.date.fromNow() });
+  };
+
   render() {
     const { log, name, displayMode } = this.props;
+    const { fromNowDate, showDeleteModal } = this.state;
     return (
       <div className="list-group-item">
         <p>
@@ -33,9 +46,9 @@ class Log extends Component {
         <p>
           <span
             className="text-muted font-weight-normal"
-            title={log.date.format("D MMM 'YY, H:mm:ss")}
+            title={log.date.format("H:mm:ss - dddd D MMM 'YY")}
           >
-            {displayMode ? log.date.fromNow() : log.date.format("Humm")}&nbsp;
+            {displayMode ? fromNowDate : log.date.format("Humm")}&nbsp;
             <small
               className={
                 displayMode
@@ -57,17 +70,15 @@ class Log extends Component {
           </button>
         </p>
 
-        <Modal
-          visible={this.state.showDeleteModal}
-          onClickBackdrop={this.handleCancel}
-        >
+        <Modal visible={showDeleteModal} onClickBackdrop={this.handleCancel}>
           <div className="modal-header">
             <h5 className="modal-title">Ben je zeker?</h5>
           </div>
           <div className="modal-body">
             <p>
-              <strong>{log.amount}</strong> kikkerpunten van{" "}
-              <strong>{name}</strong> verwijderen?
+              <strong>{log.amount}</strong> kikkerpunt Wil je{" "}
+              {log.amount === 1 ? "" : "en"} van <strong>{name}</strong>{" "}
+              verwijderen?
             </p>
             <p className="text-muted">Reden: {log.reason}</p>
           </div>
@@ -98,6 +109,7 @@ class Log extends Component {
       (this.props.log.amount > 0 ? "secondary" : "danger")
     );
   }
+
   handleShowDeleteModal = () => {
     this.setState({ showDeleteModal: true });
   };

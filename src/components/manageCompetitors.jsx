@@ -3,7 +3,6 @@ import Octicon from "react-octicon";
 
 class ManageCompetitors extends Component {
   state = {
-    showAddCompetitor: false,
     newCompetitorName: ""
   };
   render() {
@@ -13,15 +12,15 @@ class ManageCompetitors extends Component {
           <button
             type="button"
             className={this.getShowAddCompetitorClasses()}
-            onClick={this.handleShowAddCompetitor}
+            onClick={this.props.onShowAddCompetitor}
           >
-            <Octicon name={this.state.showAddCompetitor ? "x" : "person"} />
+            <Octicon name={this.props.showAddCompetitor ? "x" : "person"} />
             &nbsp;Nieuwe deelnemer
           </button>
         </div>
         <div
           style={{
-            display: this.state.showAddCompetitor ? "block" : "none",
+            display: this.props.showAddCompetitor ? "block" : "none",
             maxWidth: 350
           }}
           className="card text-center mt-3 mx-auto"
@@ -64,14 +63,9 @@ class ManageCompetitors extends Component {
     this.setState({ newCompetitorName: e.target.value });
   };
 
-  handleShowAddCompetitor = () => {
-    this.setState(prevState => ({
-      showAddCompetitor: !prevState.showAddCompetitor
-    }));
-  };
   handleKeyDown = event => {
     if (event.keyCode === 27) {
-      this.handleShowAddCompetitor();
+      this.props.onShowAddCompetitor();
     }
   };
   onAddCompetitorHelper = e => {
@@ -83,7 +77,7 @@ class ManageCompetitors extends Component {
 
   getShowAddCompetitorClasses = () => {
     const classes = "btn btn-outline-secondary ";
-    return this.state.showAddCompetitor ? classes + "active" : classes;
+    return this.props.showAddCompetitor ? classes + "active" : classes;
   };
 }
 
