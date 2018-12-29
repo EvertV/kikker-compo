@@ -11,7 +11,8 @@ class Competitor extends Component {
     newLogReason: "",
     showDeleteModal: false,
     showEditModal: false,
-    showDetailsButtonOnHover: false
+    showDetailsButtonOnHover: false,
+    showLogsAmount: 3
   };
 
   render() {
@@ -19,15 +20,14 @@ class Competitor extends Component {
       competitor,
       onCalculatePointsFromLogs,
       logs,
-      onDeleteLog,
-      onShowDetailsCompetitor
+      onDeleteLog
     } = this.props; // argument destruction
 
     moment.locale("nl-be");
     return (
       <React.Fragment>
         <tr
-          onClick={() => onShowDetailsCompetitor(competitor.name)}
+          onClick={() => this.onShowDetailsCompetitorHelper(competitor.name)}
           onMouseEnter={() => this.handleShowDetailsButton()}
           onMouseLeave={() => this.handleShowDetailsButton()}
         >
@@ -133,14 +133,30 @@ class Competitor extends Component {
                     className="list-group list-group-flush"
                     style={{ maxWidth: 500 }}
                   >
-                    {logs.sort(this.compareDate).map(log => (
-                      <Log
-                        key={log.id}
-                        log={log}
-                        name={competitor.name}
-                        onDeleteLog={(name, id) => onDeleteLog(name, id)}
-                      />
-                    ))}
+                    {logs
+                      .sort(this.compareDate)
+                      .slice(0, this.state.showLogsAmount)
+                      .map(log => (
+                        <Log
+                          key={log.id}
+                          log={log}
+                          name={competitor.name}
+                          onDeleteLog={(name, id) => onDeleteLog(name, id)}
+                        />
+                      ))}
+
+                    <button
+                      className="btn btn-link btn-block"
+                      onClick={this.handleLoadMore}
+                      style={{
+                        display:
+                          this.state.showLogsAmount >= logs.length
+                            ? "none"
+                            : "inline-block"
+                      }}
+                    >
+                      Meer laden...
+                    </button>
                   </div>
                 </div>
               </div>
@@ -301,6 +317,11 @@ class Competitor extends Component {
     }
     return comparison;
   }
+  handleLoadMore = () => {
+    this.setState(prevState => ({
+      showLogsAmount: prevState.showLogsAmount + 5
+    }));
+  };
   handleShowDeleteModal = () => {
     this.setState({ showDeleteModal: true });
   };
@@ -383,6 +404,10 @@ class Competitor extends Component {
     return this.props.competitor.showDetailsCompetitor
       ? classes + "outline-danger"
       : classes + "outline-info";
+  };
+  onShowDetailsCompetitorHelper = name => {
+    this.setState({ showLogsAmount: 3 });
+    this.props.onShowDetailsCompetitor(name);
   };
 }
 

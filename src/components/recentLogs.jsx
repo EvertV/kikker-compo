@@ -68,6 +68,12 @@ class RecentLogs extends Component {
         <button
           className="btn btn-link btn-block"
           onClick={this.handleLoadMore}
+          style={{
+            display:
+              this.state.showRecentLogsAmount > recentLogs.length
+                ? "none"
+                : "inline-block"
+          }}
         >
           Meer laden...
         </button>
