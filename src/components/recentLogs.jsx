@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import Log from "./log";
 
 class RecentLogs extends Component {
+  state = {
+    showRecentLogsAmount: 3
+  };
   render() {
     const competitors = this.props.competitors.slice(0);
     const allLogs = competitors
@@ -39,26 +42,35 @@ class RecentLogs extends Component {
       });
     });
 
-    const recentLogs = logsInOneArray.sort(this.compareDate).slice(0, 3);
+    const recentLogs = logsInOneArray
+      .sort(this.compareDate)
+      .slice(0, this.state.showRecentLogsAmount);
 
     return (
       <div
-        className="card mt-2 mb-2 float-right d-none d-xxl-block"
-        style={{ width: 320 }}
+        className="card mt-2 mb-2 float-right d-none d-xxl-block recent-logs"
+        style={{ width: 320, maxHeight: 500 }}
       >
-        <div style={{ minWidth: 100 + "%" }}>
-          <div className="card-header">Recent verdiende kikkerpunten</div>
-          <div className="card-body">
-            <div
-              className="list-group list-group-flush mx-auto"
-              style={{ maxWidth: 500 }}
-            >
-              {recentLogs.map(log => (
-                <Log key={log.id + "display"} log={log} displayMode={true} />
-              ))}
-            </div>
-          </div>
+        <div className="card-body">
+          <h3 className="card-title">Recent</h3>
         </div>
+        <div className="list-group list-group-flush" style={{ maxWidth: 500 }}>
+          {recentLogs.map(log => (
+            <Log
+              key={log.id + "display"}
+              log={log}
+              name={log.name}
+              displayMode={true}
+              onDeleteLog={(name, id) => this.props.onDeleteLog(name, id)}
+            />
+          ))}
+        </div>
+        <button
+          className="btn btn-link btn-block"
+          onClick={this.handleLoadMore}
+        >
+          Meer laden...
+        </button>
       </div>
     );
   }
@@ -74,6 +86,11 @@ class RecentLogs extends Component {
     }
     return comparison;
   }
+  handleLoadMore = () => {
+    this.setState(prevState => ({
+      showRecentLogsAmount: prevState.showRecentLogsAmount + 5
+    }));
+  };
 }
 
 export default RecentLogs;

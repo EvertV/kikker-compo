@@ -61,9 +61,6 @@ class Log extends Component {
           </span>
           <button
             className="btn btn-link btn-sm float-right"
-            style={{
-              display: displayMode ? "none" : "inline-block"
-            }}
             onClick={this.handleShowDeleteModal}
           >
             <Octicon name="trashcan" />
@@ -76,7 +73,7 @@ class Log extends Component {
           </div>
           <div className="modal-body">
             <p>
-              <strong>{log.amount}</strong> kikkerpunt Wil je{" "}
+              Wil je <strong>{log.amount}</strong> kikkerpunt{" "}
               {log.amount === 1 ? "" : "en"} van <strong>{name}</strong>{" "}
               verwijderen?
             </p>
@@ -106,7 +103,7 @@ class Log extends Component {
   getLabelClasses() {
     return (
       "badge badge-pill badge-" +
-      (this.props.log.amount > 0 ? "secondary" : "danger")
+      (this.props.log.amount >= 0 ? "dark" : "danger")
     );
   }
 

@@ -48,7 +48,6 @@ class App extends Component {
   getFromDatabase = () => {
     const dbCompetitors = firebase.database().ref("competitors/");
     dbCompetitors.on("value", snapshot => {
-      console.log(snapshot.val());
       this.updateCompetitors(snapshot.val());
     });
   };
@@ -73,10 +72,8 @@ class App extends Component {
       };
     });
 
-    console.log(arrayCompetitors);
     if (arrayCompetitors.length > 0)
       this.setState({ competitors: arrayCompetitors });
-    console.log(this.state.competitors);
   };
   componentDidMount() {
     this.getFromDatabase();
@@ -97,7 +94,10 @@ class App extends Component {
             <p className="text-muted lead">Gateway&nbsp;Gaming</p>
           </h1>
         </div>
-        <RecentLogs competitors={this.state.competitors} />
+        <RecentLogs
+          competitors={this.state.competitors}
+          onDeleteLog={(name, id) => this.handleDeleteLogCompetitor(name, id)}
+        />
         <div className="container">
           <ManageCompetitors
             competitors={this.state.competitors}
@@ -128,12 +128,6 @@ class App extends Component {
       </React.Fragment>
     );
   }
-  confirmed() {
-    console.log("confirmed");
-  }
-  cancelled() {
-    console.log("cancelled");
-  }
   handleAddCompetitor = name => {
     if (
       name.trim() !== "" &&
@@ -149,16 +143,10 @@ class App extends Component {
             name: name,
             dateAdded: moment(),
             showDetailsCompetitor: false,
-            logs: [
-              {
-                date: moment(),
-                reason: "Nieuwe kikker",
-                id: name + "&&" + moment().millisecond(),
-                amount: 1
-              }
-            ]
+            logs: []
           }
-        ]
+        ],
+        showAddCompetitor: false
       }));
 
       firebase
@@ -168,14 +156,7 @@ class App extends Component {
           name,
           dateAdded: moment().format(),
           showDetailsCompetitor: false,
-          logs: [
-            {
-              date: moment().format(),
-              reason: "Nieuwe kikker",
-              id: name + "&&" + moment().millisecond(),
-              amount: 1
-            }
-          ]
+          logs: []
         });
       return true;
     }
