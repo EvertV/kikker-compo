@@ -26,7 +26,6 @@ class App extends Component {
   };
   writeToDatabase = () => {
     this.state.competitors.forEach(competitor => {
-      console.log(competitor);
       firebase
         .database()
         .ref("competitors/" + competitor.name)

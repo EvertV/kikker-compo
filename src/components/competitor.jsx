@@ -10,7 +10,8 @@ class Competitor extends Component {
     newLogAmount: "",
     newLogReason: "",
     showDeleteModal: false,
-    showEditModal: false
+    showEditModal: false,
+    showDetailsButtonOnHover: false
   };
 
   render() {
@@ -25,14 +26,18 @@ class Competitor extends Component {
     moment.locale("nl-be");
     return (
       <React.Fragment>
-        <tr onClick={() => onShowDetailsCompetitor(competitor.name)}>
+        <tr
+          onClick={() => onShowDetailsCompetitor(competitor.name)}
+          onMouseEnter={() => this.handleShowDetailsButton()}
+          onMouseLeave={() => this.handleShowDetailsButton()}
+        >
           <td>
             <p>{competitor.name}</p>
           </td>
           <td>
             <p>
               {onCalculatePointsFromLogs(logs)}
-              <span className="float-right">
+              <span className="float-right" style={this.getHoverStyle()}>
                 <button className={this.getShowDetailsCompetitorClasses()}>
                   <Octicon
                     name="x"
@@ -298,6 +303,22 @@ class Competitor extends Component {
   }
   handleShowDeleteModal = () => {
     this.setState({ showDeleteModal: true });
+  };
+  handleShowDetailsButton = () => {
+    this.setState(prevState => ({
+      showDetailsButtonOnHover: !prevState.showDetailsButtonOnHover
+    }));
+  };
+  getHoverStyle = () => {
+    if (window.innerWidth > 960) {
+      return {
+        visibility:
+          this.state.showDetailsButtonOnHover ||
+          this.props.competitor.showDetailsCompetitor
+            ? "visible"
+            : "hidden"
+      };
+    }
   };
   handleCancelDeleteModal = () => {
     this.setState({ showDeleteModal: false });

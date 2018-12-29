@@ -115,7 +115,8 @@ class Log extends Component {
   };
   handleOk = () => {
     this.setState({ showDeleteModal: false });
-    this.props.onDeleteLog(this.props.name, this.props.log.id);
+    const name = this.props.name || this.props.log.competitorName;
+    this.props.onDeleteLog(name, this.props.log.id);
   };
 }
 
