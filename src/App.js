@@ -3,6 +3,7 @@ import TableCompetitors from "./components/tableCompetitors";
 import ManageCompetitors from "./components/manageCompetitors";
 import RecentLogs from "./components/recentLogs";
 import * as moment from "moment";
+import firebase from "firebase";
 
 class App extends Component {
   state = {
@@ -48,6 +49,70 @@ class App extends Component {
       }
     ]
   };
+  writeToDatabase = () => {
+    this.state.competitors.forEach(competitor => {
+      console.log(competitor);
+      firebase
+        .database()
+        .ref("competitors/" + competitor.name)
+        .set({
+          name: competitor.name,
+          dateAdded: competitor.dateAdded.format(),
+          showDetailsCompetitor: competitor.showDetailsCompetitor,
+          logs: competitor.logs.map(log => {
+            return {
+              date: log.date.format(),
+              id: log.id,
+              amount: log.amount,
+              reason: log.reason
+            };
+          })
+        });
+    });
+  };
+  getFromDatabase = () => {
+    const dbCompetitors = firebase.database().ref("competitors/");
+    dbCompetitors.on("value", snapshot => {
+      console.log(snapshot.val());
+      this.updateCompetitors(snapshot.val());
+    });
+  };
+  updateCompetitors = arrayCompetitors => {
+    arrayCompetitors = Object.values(arrayCompetitors);
+
+    arrayCompetitors = arrayCompetitors.map(competitor => {
+      return {
+        name: competitor.name,
+        dateAdded: moment(competitor.dateAdded),
+        showDetailsCompetitor: false,
+        logs: competitor.logs
+          ? competitor.logs.map(log => {
+              return {
+                date: moment(log.date),
+                id: log.id,
+                amount: log.amount,
+                reason: log.reason
+              };
+            })
+          : []
+      };
+    });
+
+    console.log(arrayCompetitors);
+    if (arrayCompetitors.length > 0)
+      this.setState({ competitors: arrayCompetitors });
+    console.log(this.state.competitors);
+  };
+  componentDidMount() {
+    this.getFromDatabase();
+  }
+  componentWillMount() {
+    if (!firebase.apps.length) {
+      firebase.initializeApp({
+        databaseURL: "https://kikker-compo.firebaseio.com/"
+      });
+    }
+  }
   render() {
     return (
       <React.Fragment>
@@ -118,6 +183,7 @@ class App extends Component {
           }
         ]
       }));
+      this.writeToDatabase();
       return true;
     }
     return false;
@@ -133,11 +199,16 @@ class App extends Component {
     this.setState(prevState => ({
       competitors: comps
     }));
+    this.writeToDatabase();
   };
   handleDeleteCompetitor = name => {
     this.setState(prevState => ({
       competitors: prevState.competitors.filter(el => el.name !== name)
     }));
+    firebase
+      .database()
+      .ref("competitors/" + name)
+      .remove();
   };
   handleUpdateCompetitorName = (oldName, newName) => {
     var comps = this.state.competitors;
@@ -150,6 +221,7 @@ class App extends Component {
     this.setState(prevState => ({
       competitors: comps
     }));
+    this.writeToDatabase();
   };
   handleAddLogCompetitor = (name, amount, reason) => {
     if (amount !== "") {
@@ -173,6 +245,7 @@ class App extends Component {
         this.setState(prevState => ({
           competitors: competitors
         }));
+        this.writeToDatabase();
         return true;
       }
     }
