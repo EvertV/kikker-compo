@@ -64,7 +64,7 @@ class SignInScreen extends React.Component {
             />{" "}
             {firebase.auth().currentUser.displayName}
           </h5>
-          <p className="lead">
+          <p className="lead text-muted">
             <small>
               Je bent ingelogd sinds
               <br />

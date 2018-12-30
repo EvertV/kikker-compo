@@ -32,12 +32,10 @@ class Competitor extends Component {
           onMouseEnter={() => this.handleMouseEnterRow()}
           onMouseLeave={() => this.handleMouseLeaveRow()}
         >
-          <td>
-            <p>{competitor.name}</p>
-          </td>
+          <td className="text-center">{competitor.name}</td>
           <td>
             <p>
-              {onCalculatePointsFromLogs(logs)}
+              {onCalculatePointsFromLogs(logs)}&nbsp;&nbsp;
               <span className="float-right" style={this.getHoverStyle()}>
                 <button className={this.getShowDetailsCompetitorClasses()}>
                   <Octicon

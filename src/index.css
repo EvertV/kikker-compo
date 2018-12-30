@@ -25,13 +25,19 @@
   text-align: center;
 }
 .table td > p:first-child {
-  margin-left: 37px;
+  margin-left: 0;
 }
 .octicon {
   padding-left: 3px;
 }
 .d-xxl-block {
   display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .table td > p:first-child {
+    margin-left: 37px;
+  }
 }
 @media screen and (min-width: 1780px) {
   .d-xxl-block {
