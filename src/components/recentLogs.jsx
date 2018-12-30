@@ -21,7 +21,8 @@ class RecentLogs extends Component {
             id: l.id,
             amount: l.amount,
             reason: l.reason,
-            competitorName: c.name
+            competitorName: c.name,
+            addedBy: l.addedBy
           };
         });
       });
@@ -36,7 +37,8 @@ class RecentLogs extends Component {
             id: log.id,
             amount: log.amount,
             reason: log.reason,
-            competitorName: log.competitorName
+            competitorName: log.competitorName,
+            addedBy: log.addedBy
           }
         ];
       });

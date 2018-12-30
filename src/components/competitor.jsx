@@ -217,9 +217,9 @@ class Competitor extends Component {
                   </div>
                 </div>
                 <div
-                  className="card"
+                  className="card mb-3"
                   style={{
-                    display: isSignedIn ? "inline" : "none"
+                    display: isSignedIn ? "block" : "none"
                   }}
                 >
                   <div className="card-header">Bewerk {competitor.name}</div>
@@ -240,9 +240,6 @@ class Competitor extends Component {
                           autoComplete="off"
                           value={this.state.newName}
                           onChange={this.handleNameChange}
-                          /*ref={input => {
-                          this.inputName = input && input.focus();
-                        }}*/
                         />
                         <span className="input-group-append">
                           <button type="submit" className="btn btn-primary">
@@ -254,30 +251,29 @@ class Competitor extends Component {
                     </form>
                   </div>
                 </div>
-
-                <div className="modal-footer float-left">
-                  <button
-                    type="submit"
-                    className="btn btn-danger"
-                    onClick={this.handleShowDeleteModal}
-                    style={{
-                      display: isSignedIn ? "inline" : "none"
-                    }}
-                  >
-                    <Octicon name="trashcan" />
-                    &nbsp;Verwijder {competitor.name}
-                  </button>
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="submit"
-                    className="btn btn-secondary"
-                    onClick={this.handleCancelEditModal}
-                  >
-                    <Octicon name="x" />
-                    &nbsp;Sluit
-                  </button>
-                </div>
+              </div>
+              <div
+                className="modal-footer"
+                style={{
+                  display: isSignedIn ? "inline-block" : "none"
+                }}
+              >
+                <button
+                  type="submit"
+                  className="btn btn-danger float-left"
+                  onClick={this.handleShowDeleteModal}
+                >
+                  <Octicon name="trashcan" />
+                  &nbsp;Verwijder {competitor.name}
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-secondary float-right"
+                  onClick={this.handleCancelEditModal}
+                >
+                  <Octicon name="x" />
+                  &nbsp;Sluit
+                </button>
               </div>
             </Modal>
 

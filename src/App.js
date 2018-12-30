@@ -40,7 +40,8 @@ class App extends Component {
               date: log.date.format(),
               id: log.id,
               amount: log.amount,
-              reason: log.reason
+              reason: log.reason,
+              addedBy: log.addedBy
             };
           })
         });
@@ -66,7 +67,8 @@ class App extends Component {
                 date: moment(log.date),
                 id: log.id,
                 amount: log.amount,
-                reason: log.reason
+                reason: log.reason,
+                addedBy: log.addedBy
               };
             })
           : []
@@ -239,7 +241,8 @@ class App extends Component {
                 reason: reason,
                 showDetailsCompetitor: false,
                 id: name + "-log-" + moment() + "-nr-" + e.logs.length,
-                amount: parseInt(amount)
+                amount: parseInt(amount),
+                addedBy: firebase.auth().currentUser.displayName
               }
             ];
           }
@@ -284,8 +287,10 @@ class App extends Component {
       showAddCompetitor: !prevState.showAddCompetitor
     }));
   };
-  handleSetSignedInState = state => {
-    this.setState({ isSignedIn: state });
+  handleSetSignedInState = () => {
+    this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
+      this.setState({ isSignedIn: !!user });
+    });
   };
 }
 

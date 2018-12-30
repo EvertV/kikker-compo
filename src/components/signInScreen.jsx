@@ -21,14 +21,7 @@ class SignInScreen extends React.Component {
     // Popup signin flow rather than redirect flow.
     signInFlow: "popup",
     // We will display Google and Facebook as auth providers.
-    signInOptions: [
-      {
-        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        requireDisplayName: false
-      },
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.FacebookAuthProvider.PROVIDER_ID
-    ],
+    signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
     callbacks: {
       // Avoid redirects after sign-in.
       signInSuccessWithAuthResult: () => false
@@ -37,9 +30,7 @@ class SignInScreen extends React.Component {
 
   // Listen to the Firebase Auth state and set the local state.
   componentDidMount() {
-    this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
-      this.props.onSetSignedInState(!!user);
-    });
+    this.props.onSetSignedInState();
   }
 
   // Make sure we un-register Firebase observers when the component unmounts.

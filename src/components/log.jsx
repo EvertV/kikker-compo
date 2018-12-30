@@ -20,8 +20,9 @@ class Log extends Component {
   };
 
   render() {
-    const { log, name, displayMode, isSignedIn } = this.props;
+    const { log, displayMode, isSignedIn } = this.props;
     const { fromNowDate, showDeleteModal } = this.state;
+    const name = this.props.name || this.props.log.competitorName;
     return (
       <div className="list-group-item">
         <p>
@@ -41,15 +42,22 @@ class Log extends Component {
             display: displayMode ? "block" : "none"
           }}
         >
-          {log.competitorName}
+          {name}
         </p>
         <p>
-          <span
+          <small
             className="text-muted font-weight-normal"
             title={log.date.format("HH:mm:ss - dddd D MMM 'YY")}
           >
-            {displayMode ? fromNowDate : log.date.format("HHumm")}&nbsp;
-            <small
+            {displayMode ? fromNowDate : log.date.format("HHumm")}{" "}
+            <span
+              style={{
+                display: log.addedBy ? "inline" : "none"
+              }}
+            >
+              door <span className="font-italic">{log.addedBy}</span>
+            </span>
+            <span
               className={
                 displayMode
                   ? "font-weight-lighter d-none"
@@ -57,8 +65,8 @@ class Log extends Component {
               }
             >
               {log.date.format("D MMM")}
-            </small>
-          </span>
+            </span>
+          </small>
           <button
             className="btn btn-link btn-sm float-right"
             onClick={this.handleShowDeleteModal}
