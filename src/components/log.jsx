@@ -51,13 +51,6 @@ class Log extends Component {
           >
             {displayMode ? fromNowDate : log.date.format("HHumm")}{" "}
             <span
-              style={{
-                display: log.addedBy ? "inline" : "none"
-              }}
-            >
-              door <span className="font-italic">{log.addedBy}</span>
-            </span>
-            <span
               className={
                 displayMode
                   ? "font-weight-lighter d-none"
@@ -65,6 +58,14 @@ class Log extends Component {
               }
             >
               {log.date.format("D MMM")}
+            </span>
+            <span
+              style={{
+                display: log.addedBy ? "inline" : "none"
+              }}
+            >
+              {" "}
+              - <span className="font-italic">{log.addedBy}</span>
             </span>
           </small>
           <button
