@@ -101,6 +101,7 @@ class App extends Component {
         />
         <RecentLogs
           competitors={this.state.competitors}
+          isSignedIn={this.state.isSignedIn}
           onDeleteLog={(name, id) => this.handleDeleteLogCompetitor(name, id)}
         />
         <div className="container">

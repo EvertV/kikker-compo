@@ -61,6 +61,7 @@ class RecentLogs extends Component {
               log={log}
               name={log.name}
               displayMode={true}
+              isSignedIn={this.props.isSignedIn}
               onDeleteLog={(name, id) => this.props.onDeleteLog(name, id)}
             />
           ))}
