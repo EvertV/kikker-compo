@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import TableCompetitors from "./components/tableCompetitors";
 import ManageCompetitors from "./components/manageCompetitors";
 import RecentLogs from "./components/recentLogs";
-import PointsInfo from "./components/pointsInfo";
 import * as moment from "moment";
 import firebase from "firebase";
+import LeftCol from "./components/leftCol";
 
 class App extends Component {
   state = {
     showAddCompetitor: false,
+    isSignedIn: false,
     competitors: [
       {
         name: "Bezig met laden...",
@@ -94,19 +95,24 @@ class App extends Component {
             <p className="text-muted lead">Gateway&nbsp;Gaming</p>
           </h1>
         </div>
-        <PointsInfo />
+        <LeftCol
+          isSignedIn={this.state.isSignedIn}
+          onSetSignedInState={state => this.handleSetSignedInState(state)}
+        />
         <RecentLogs
           competitors={this.state.competitors}
           onDeleteLog={(name, id) => this.handleDeleteLogCompetitor(name, id)}
         />
         <div className="container">
           <ManageCompetitors
+            isSignedIn={this.state.isSignedIn}
             competitors={this.state.competitors}
             onAddCompetitor={this.handleAddCompetitor}
             onShowAddCompetitor={this.handleShowAddCompetitor}
             showAddCompetitor={this.state.showAddCompetitor}
           />
           <TableCompetitors
+            isSignedIn={this.state.isSignedIn}
             competitors={this.state.competitors}
             onDeleteLogCompetitor={(name, id) =>
               this.handleDeleteLogCompetitor(name, id)
@@ -276,6 +282,9 @@ class App extends Component {
       competitors,
       showAddCompetitor: !prevState.showAddCompetitor
     }));
+  };
+  handleSetSignedInState = state => {
+    this.setState({ isSignedIn: state });
   };
 }
 

@@ -4,35 +4,32 @@ class pointInfo extends Component {
   render() {
     const infoElements = [
       {
-        naam: "pintje",
+        reason: "PINTEU",
         points: 1
       },
       {
-        naam: "Vuile fart",
+        reason: "Vuile fart",
         points: 3
       },
       {
-        naam: "Adje",
+        reason: "Adje",
         points: 5
       },
       {
-        naam: "Axel-fart",
+        reason: "Axel-fart",
         points: 7
       },
       {
-        naam: "Luide boer",
+        reason: "Luide boer",
         points: 2
       },
       {
-        naam: "Gooien me nootjes",
+        reason: "Gooien me nootjes",
         points: 2
       }
     ];
     return (
-      <div
-        className="card float-left d-none d-xxl-block"
-        style={{ width: 320, maxHeight: 500 }}
-      >
+      <div className="card d-none d-xxl-block">
         <div className="card-body">
           <h3 className="card-title">Info</h3>
         </div>
@@ -42,8 +39,8 @@ class pointInfo extends Component {
               return a.points - b.points;
             })
             .map(element => (
-              <div className="list-group-item">
-                {element.naam}
+              <div key={element.reason} className="list-group-item">
+                {element.reason}
                 <small className="d-none d-sm-inline float-right">
                   Punten:&nbsp;
                   <span className="badge badge-pill badge-dark">

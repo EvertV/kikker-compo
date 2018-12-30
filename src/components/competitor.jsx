@@ -20,7 +20,8 @@ class Competitor extends Component {
       competitor,
       onCalculatePointsFromLogs,
       logs,
-      onDeleteLog
+      onDeleteLog,
+      isSignedIn
     } = this.props; // argument destruction
 
     moment.locale("nl-be");
@@ -28,8 +29,8 @@ class Competitor extends Component {
       <React.Fragment>
         <tr
           onClick={() => this.onShowDetailsCompetitorHelper(competitor.name)}
-          onMouseEnter={() => this.handleShowDetailsButton()}
-          onMouseLeave={() => this.handleShowDetailsButton()}
+          onMouseEnter={() => this.handleMouseEnterRow()}
+          onMouseLeave={() => this.handleMouseLeaveRow()}
         >
           <td>
             <p>{competitor.name}</p>
@@ -48,7 +49,7 @@ class Competitor extends Component {
                     }}
                   />
                   <Octicon
-                    name="pencil"
+                    name={isSignedIn ? "pencil" : "chevron-down"}
                     style={{
                       display: competitor.showDetailsCompetitor
                         ? "none"
@@ -82,7 +83,12 @@ class Competitor extends Component {
                         </span>
                       </span>
                     </h4>
-                    <form onSubmit={this.onAddLogHelper}>
+                    <form
+                      onSubmit={this.onAddLogHelper}
+                      style={{
+                        display: isSignedIn ? "inline" : "none"
+                      }}
+                    >
                       <div className="input-group">
                         <label htmlFor="inputNewLogReason" className="sr-only">
                           Reden
@@ -142,6 +148,7 @@ class Competitor extends Component {
                           log={log}
                           name={competitor.name}
                           onDeleteLog={(name, id) => onDeleteLog(name, id)}
+                          isSignedIn={this.props.isSignedIn}
                         />
                       ))}
 
@@ -168,7 +175,8 @@ class Competitor extends Component {
                   className="btn btn-link btn-sm"
                   onClick={this.handleShowEditModal}
                 >
-                  Bewerk/bekijk {competitor.name} &raquo;
+                  {isSignedIn ? "Bewerk/bekijk" : "Bekijk"} details{" "}
+                  {competitor.name} &raquo;
                 </button>
               </div>
             </div>
@@ -208,7 +216,12 @@ class Competitor extends Component {
                     </p>
                   </div>
                 </div>
-                <div className="card">
+                <div
+                  className="card"
+                  style={{
+                    display: isSignedIn ? "inline" : "none"
+                  }}
+                >
                   <div className="card-header">Bewerk {competitor.name}</div>
                   <div className="card-body">
                     <form
@@ -247,6 +260,9 @@ class Competitor extends Component {
                     type="submit"
                     className="btn btn-danger"
                     onClick={this.handleShowDeleteModal}
+                    style={{
+                      display: isSignedIn ? "inline" : "none"
+                    }}
                   >
                     <Octicon name="trashcan" />
                     &nbsp;Verwijder {competitor.name}
@@ -325,10 +341,15 @@ class Competitor extends Component {
   handleShowDeleteModal = () => {
     this.setState({ showDeleteModal: true });
   };
-  handleShowDetailsButton = () => {
-    this.setState(prevState => ({
-      showDetailsButtonOnHover: !prevState.showDetailsButtonOnHover
-    }));
+  handleMouseEnterRow = () => {
+    this.setState({
+      showDetailsButtonOnHover: true
+    });
+  };
+  handleMouseLeaveRow = () => {
+    this.setState({
+      showDetailsButtonOnHover: false
+    });
   };
   getHoverStyle = () => {
     if (window.innerWidth > 960) {

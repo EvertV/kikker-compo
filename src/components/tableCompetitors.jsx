@@ -18,6 +18,7 @@ class TableCompetitors extends Component {
                 key={c.name}
                 competitor={c}
                 logs={c.logs}
+                isSignedIn={this.props.isSignedIn}
                 onDeleteLog={(name, id) =>
                   this.props.onDeleteLogCompetitor(name, id)
                 }

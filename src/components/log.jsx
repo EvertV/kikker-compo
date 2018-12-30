@@ -20,7 +20,7 @@ class Log extends Component {
   };
 
   render() {
-    const { log, name, displayMode } = this.props;
+    const { log, name, displayMode, isSignedIn } = this.props;
     const { fromNowDate, showDeleteModal } = this.state;
     return (
       <div className="list-group-item">
@@ -46,9 +46,9 @@ class Log extends Component {
         <p>
           <span
             className="text-muted font-weight-normal"
-            title={log.date.format("H:mm:ss - dddd D MMM 'YY")}
+            title={log.date.format("HH:mm:ss - dddd D MMM 'YY")}
           >
-            {displayMode ? fromNowDate : log.date.format("Humm")}&nbsp;
+            {displayMode ? fromNowDate : log.date.format("HHumm")}&nbsp;
             <small
               className={
                 displayMode
@@ -62,6 +62,7 @@ class Log extends Component {
           <button
             className="btn btn-link btn-sm float-right"
             onClick={this.handleShowDeleteModal}
+            style={{ display: isSignedIn ? "inline" : "none" }}
           >
             <Octicon name="trashcan" />
           </button>
