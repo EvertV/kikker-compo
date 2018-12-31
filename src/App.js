@@ -222,7 +222,8 @@ class App extends Component {
             date: log.date.format(),
             id: log.id,
             amount: log.amount,
-            reason: log.reason
+            reason: log.reason,
+            addedBy: log.addedBy
           };
         })
       });
