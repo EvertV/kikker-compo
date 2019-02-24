@@ -2,10 +2,22 @@ import React, { Component } from "react";
 import TableCompetitors from "./components/tableCompetitors";
 import ManageCompetitors from "./components/manageCompetitors";
 import RecentLogs from "./components/recentLogs";
+import AllLogs from "./components/allLogs";
 import * as moment from "moment";
 import firebase from "firebase";
-import LeftCol from "./components/leftCol";
+import SignInScreen from "./components/signInScreen";
+import NavBar from "./components/navBar";
+import { Route, Switch } from "react-router-dom";
 
+const config = {
+  apiKey: "AIzaSyA9-EzlXM_COSeuN8R9MZZ34unSgzqYoZw",
+  authDomain: "kikker-compo.firebaseapp.com",
+  databaseURL: "https://kikker-compo.firebaseio.com",
+  projectId: "kikker-compo",
+  storageBucket: "kikker-compo.appspot.com",
+  messagingSenderId: "211299776551"
+};
+firebase.initializeApp(config);
 class App extends Component {
   state = {
     showAddCompetitor: false,
@@ -35,6 +47,7 @@ class App extends Component {
           name: competitor.name,
           dateAdded: competitor.dateAdded.format(),
           showDetailsCompetitor: competitor.showDetailsCompetitor,
+          addedBy: competitor.addedBy,
           logs: competitor.logs.map(log => {
             return {
               date: log.date.format(),
@@ -61,6 +74,7 @@ class App extends Component {
         name: competitor.name,
         dateAdded: moment(competitor.dateAdded),
         showDetailsCompetitor: false,
+        addedBy: competitor.addedBy,
         logs: competitor.logs
           ? competitor.logs.map(log => {
               return {
@@ -80,6 +94,7 @@ class App extends Component {
   };
   componentDidMount() {
     this.getFromDatabase();
+    this.handleSetSignedInState(); // Listen to the Firebase Auth state and set the local state.
   }
   componentWillMount() {
     if (!firebase.apps.length) {
@@ -88,53 +103,99 @@ class App extends Component {
       });
     }
   }
+
+  // Make sure we un-register Firebase observers when the component unmounts.
+  componentWillUnmount() {
+    this.unregisterAuthObserver();
+  }
   render() {
     return (
       <React.Fragment>
-        <div className="mt-2 page-header text-center">
-          <h1 className="display-4">
-            Kikker&nbsp;Compo
-            <p className="text-muted lead">Gateway&nbsp;Gaming</p>
-          </h1>
-        </div>
-        <LeftCol
-          isSignedIn={this.state.isSignedIn}
-          onSetSignedInState={state => this.handleSetSignedInState(state)}
-        />
-        <RecentLogs
-          competitors={this.state.competitors}
-          isSignedIn={this.state.isSignedIn}
-          onDeleteLog={(name, id) => this.handleDeleteLogCompetitor(name, id)}
-        />
-        <div className="container">
-          <ManageCompetitors
-            isSignedIn={this.state.isSignedIn}
-            competitors={this.state.competitors}
-            onAddCompetitor={this.handleAddCompetitor}
-            onShowAddCompetitor={this.handleShowAddCompetitor}
-            showAddCompetitor={this.state.showAddCompetitor}
+        <NavBar />
+        <Switch>
+          <Route
+            path="/account"
+            render={props => (
+              <SignInScreen
+                {...props}
+                isSignedIn={this.state.isSignedIn}
+                onSetSignedInState={state => this.handleSetSignedInState(state)}
+              />
+            )}
           />
-          <TableCompetitors
-            isSignedIn={this.state.isSignedIn}
-            competitors={this.state.competitors}
-            onDeleteLogCompetitor={(name, id) =>
-              this.handleDeleteLogCompetitor(name, id)
-            }
-            onDeleteCompetitor={name => this.handleDeleteCompetitor(name)}
-            onUpdateCompetitorName={(oldName, newName) =>
-              this.handleUpdateCompetitorName(oldName, newName)
-            }
-            onAddLogCompetitor={(name, amount, reason) =>
-              this.handleAddLogCompetitor(name, amount, reason)
-            }
-            onCalculatePointsFromLogs={logArray =>
-              this.handleCalculatePointsFromLogs(logArray)
-            }
-            onShowDetailsCompetitor={name =>
-              this.handleShowDetailsCompetitor(name)
-            }
+          <Route
+            path="/logs"
+            render={props => (
+              <AllLogs
+                {...props}
+                competitors={this.state.competitors}
+                isSignedIn={this.state.isSignedIn}
+                onDeleteLog={(name, id) =>
+                  this.handleDeleteLogCompetitor(name, id)
+                }
+              />
+            )}
           />
-        </div>
+          <Route
+            path="/deelnemers"
+            render={props => (
+              <ManageCompetitors
+                {...props}
+                isSignedIn={this.state.isSignedIn}
+                competitors={this.state.competitors}
+                onAddCompetitor={this.handleAddCompetitor}
+                onShowAddCompetitor={this.handleShowAddCompetitor}
+                showAddCompetitor={this.state.showAddCompetitor}
+                onCalculatePointsFromLogs={logArray =>
+                  this.handleCalculatePointsFromLogs(logArray)
+                }
+                onUpdateCompetitorName={(oldName, newName) =>
+                  this.handleUpdateCompetitorName(oldName, newName)
+                }
+                onDeleteCompetitor={name => this.handleDeleteCompetitor(name)}
+              />
+            )}
+          />
+          <Route
+            path="/"
+            render={props => (
+              <div className="container-fluid">
+                <div className="mt-2 page-header text-center">
+                  <h1 className="display-4">
+                    Kikker&nbsp;Compo
+                    <p className="text-muted lead">Gateway&nbsp;Gaming</p>
+                  </h1>
+                </div>
+
+                <RecentLogs
+                  competitors={this.state.competitors}
+                  isSignedIn={this.state.isSignedIn}
+                  onDeleteLog={(name, id) =>
+                    this.handleDeleteLogCompetitor(name, id)
+                  }
+                />
+                <div className="container">
+                  <TableCompetitors
+                    isSignedIn={this.state.isSignedIn}
+                    competitors={this.state.competitors}
+                    onDeleteLogCompetitor={(name, id) =>
+                      this.handleDeleteLogCompetitor(name, id)
+                    }
+                    onAddLogCompetitor={(name, amount, reason) =>
+                      this.handleAddLogCompetitor(name, amount, reason)
+                    }
+                    onCalculatePointsFromLogs={logArray =>
+                      this.handleCalculatePointsFromLogs(logArray)
+                    }
+                    onShowDetailsCompetitor={name =>
+                      this.handleShowDetailsCompetitor(name)
+                    }
+                  />
+                </div>
+              </div>
+            )}
+          />
+        </Switch>
       </React.Fragment>
     );
   }
@@ -153,6 +214,7 @@ class App extends Component {
             name: name,
             dateAdded: moment(),
             showDetailsCompetitor: false,
+            addedBy: firebase.auth().currentUser.displayName,
             logs: []
           }
         ],
@@ -166,6 +228,7 @@ class App extends Component {
           name,
           dateAdded: moment().format(),
           showDetailsCompetitor: false,
+          addedBy: firebase.auth().currentUser.displayName,
           logs: []
         });
       return true;

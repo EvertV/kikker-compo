@@ -83,7 +83,7 @@ class Log extends Component {
           </div>
           <div className="modal-body">
             <p>
-              Wil je <strong>{log.amount}</strong> kikkerpunt{" "}
+              Wil je <strong>{log.amount}</strong> kikkerpunt
               {log.amount === 1 ? "" : "en"} van <strong>{name}</strong>{" "}
               verwijderen?
             </p>

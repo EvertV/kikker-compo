@@ -10,7 +10,7 @@ class LeftCol extends Component {
           isSignedIn={this.props.isSignedIn}
           onSetSignedInState={state => this.props.onSetSignedInState(state)}
         />
-        <PointsInfo />
+        {false && <PointsInfo />}
       </div>
     );
   }
