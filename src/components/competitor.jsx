@@ -67,8 +67,10 @@ class Competitor extends Component {
             <div className="row">
               <div className="col-sm">
                 <div className="card mx-auto" style={{ maxWidth: 500 }}>
-                  <div className="card-body">
-                    <h4 className="card-title">
+                  <div className="card-body" style={{
+                        display: isSignedIn ? "inline" : "none"
+                      }}>
+                    {/*<h4 className="card-title">
                       {competitor.name}{" "}
                       <span className="float-right">
                         <small className="d-none d-sm-inline">Totaal: </small>
@@ -76,12 +78,10 @@ class Competitor extends Component {
                           {onCalculatePointsFromLogs(logs)}
                         </span>
                       </span>
-                    </h4>
+          </h4>*/}
                     <form
                       onSubmit={this.onAddLogHelper}
-                      style={{
-                        display: isSignedIn ? "inline" : "none"
-                      }}
+                      
                     >
                       <div className="input-group">
                         <label htmlFor="inputNewLogReason" className="sr-only">

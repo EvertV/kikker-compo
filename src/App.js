@@ -229,7 +229,16 @@ class App extends Component {
           dateAdded: moment().format(),
           showDetailsCompetitor: false,
           addedBy: firebase.auth().currentUser.displayName,
-          logs: []
+          logs: [
+            {
+              date: moment().format(),
+              reason: "Nieuwe kikker",
+              showDetailsCompetitor: false,
+              id: name + "-log-" + moment() + "-nr-" + 0,
+              amount: parseInt(0),
+              addedBy: firebase.auth().currentUser.displayName
+            }
+          ]
         });
       return true;
     }
@@ -280,6 +289,7 @@ class App extends Component {
         name: newCompetitorData.name,
         dateAdded: newCompetitorData.dateAdded.format(),
         showDetailsCompetitor: newCompetitorData.showDetailsCompetitor,
+        addedBy: newCompetitorData.addedBy,
         logs: newCompetitorData.logs.map(log => {
           return {
             date: log.date.format(),
