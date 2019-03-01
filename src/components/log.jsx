@@ -28,7 +28,12 @@ class Log extends Component {
         <p>
           <big>
             {log.reason + " "}
-            <span className="float-right">
+            <span
+              className="float-right"
+              style={{
+                display: log.amount !== 0 ? "block" : "none"
+              }}
+            >
               <small className={displayMode ? "d-none" : "d-none d-sm-inline"}>
                 Punten:&nbsp;
               </small>
