@@ -1,63 +1,63 @@
 {
 	"masterPicture": "public/favicon.png",
-	"iconsPath": "/",
-	"design": {
-		"ios": {
-			"pictureAspect": "noChange",
-			"assets": {
-				"ios6AndPriorIcons": false,
-				"ios7AndLaterIcons": false,
-				"precomposedIcons": false,
-				"declareOnlyDefaultIcon": true
-			},
-			"appName": "Kikkercompo"
-		},
-		"desktopBrowser": {},
-		"windows": {
-			"pictureAspect": "whiteSilhouette",
-			"backgroundColor": "#8bc34a",
-			"onConflict": "override",
-			"assets": {
-				"windows80Ie10Tile": false,
-				"windows10Ie11EdgeTiles": {
-					"small": false,
-					"medium": true,
-					"big": false,
-					"rectangle": false
-				}
-			},
-			"appName": "Kikkercompo"
-		},
-		"androidChrome": {
-			"pictureAspect": "shadow",
-			"themeColor": "#ffffff",
-			"manifest": {
-				"name": "Kikkercompo",
-				"display": "standalone",
-				"orientation": "notSet",
-				"onConflict": "override",
-				"declared": true
-			},
-			"assets": {
-				"legacyIcon": false,
-				"lowResolutionIcons": false
-			}
-		},
-		"safariPinnedTab": {
-			"pictureAspect": "silhouette",
-			"themeColor": "#5bbad5"
-		}
-	},
-	"settings": {
-		"compression": 2,
-		"scalingAlgorithm": "Spline",
-		"errorOnImageTooSmall": false,
-		"readmeFile": true,
-		"htmlCodeFile": false,
-		"usePathAsIs": false
-	},
-	"versioning": {
-		"paramName": "v",
-		"paramValue": "GvmrJxoy9q"
-	}
-}
+        "iconsPath": "/",
+        "design": {
+            "ios": {
+                "pictureAspect": "noChange",
+                "assets": {
+                    "ios6AndPriorIcons": false,
+                    "ios7AndLaterIcons": false,
+                    "precomposedIcons": false,
+                    "declareOnlyDefaultIcon": true
+                },
+                "appName": "Kikkercompo"
+            },
+            "desktopBrowser": {},
+            "windows": {
+                "pictureAspect": "whiteSilhouette",
+                "backgroundColor": "#00a300",
+                "onConflict": "override",
+                "assets": {
+                    "windows80Ie10Tile": false,
+                    "windows10Ie11EdgeTiles": {
+                        "small": false,
+                        "medium": true,
+                        "big": false,
+                        "rectangle": false
+                    }
+                },
+                "appName": "Kikkercompo"
+            },
+            "androidChrome": {
+                "pictureAspect": "shadow",
+                "themeColor": "#ffffff",
+                "manifest": {
+                    "name": "Kikkercompo",
+                    "display": "standalone",
+                    "orientation": "notSet",
+                    "onConflict": "override",
+                    "declared": true
+                },
+                "assets": {
+                    "legacyIcon": false,
+                    "lowResolutionIcons": false
+                }
+            },
+            "safariPinnedTab": {
+                "pictureAspect": "silhouette",
+                "themeColor": "#5bbad5"
+            }
+        },
+        "settings": {
+            "compression": 2,
+            "scalingAlgorithm": "Mitchell",
+            "errorOnImageTooSmall": false,
+            "readmeFile": false,
+            "htmlCodeFile": false,
+            "usePathAsIs": false
+        },
+        "versioning": {
+            "paramName": "v",
+            "paramValue": "XBJ2r73dnw"
+        }
+    }

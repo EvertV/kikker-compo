@@ -3,8 +3,13 @@
     "short_name": "Kikkercompo",
     "icons": [
         {
-            "src": "/android-chrome-192x192.png?v=GvmrJxoy9q",
+            "src": "/android-chrome-192x192.png?v=XBJ2r73dnw",
             "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png?v=XBJ2r73dnw",
+            "sizes": "512x512",
             "type": "image/png"
         }
     ],
