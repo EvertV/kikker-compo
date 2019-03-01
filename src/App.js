@@ -162,7 +162,7 @@ class App extends Component {
               <div className="container-fluid">
                 <div className="mt-2 page-header text-center">
                   <h1 className="display-4">
-                    Kikker&nbsp;Compo
+                    Kikkercompo
                     <p className="text-muted lead">Gateway&nbsp;Gaming</p>
                   </h1>
                 </div>
