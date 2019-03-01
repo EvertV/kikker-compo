@@ -36,7 +36,9 @@ class App extends Component {
           }
         ]
       }
-    ]
+    ],
+    deferredPrompt: null,
+    showAddToHomeButton: false
   };
   writeToDatabase = () => {
     this.state.competitors.forEach(competitor => {
@@ -92,9 +94,33 @@ class App extends Component {
     if (arrayCompetitors.length > 0)
       this.setState({ competitors: arrayCompetitors });
   };
+  handleAddToHomescreenClick = () => {
+    // hide our user interface that shows our A2HS button
+    this.setState({ showAddToHomeButton: false });
+    // Show the prompt
+    this.state.deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    this.state.deferredPrompt.userChoice.then(choiceResult => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("User accepted the A2HS prompt");
+      } else {
+        console.log("User dismissed the A2HS prompt");
+      }
+      this.setState({ deferredPrompt: null });
+    });
+  };
   componentDidMount() {
     this.getFromDatabase();
     this.handleSetSignedInState(); // Listen to the Firebase Auth state and set the local state.
+
+    window.addEventListener("beforeinstallprompt", e => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      this.setState({ deferredPrompt: e });
+      // Update UI notify the user they can add to home screen
+      this.setState({ showAddToHomeButton: true });
+    });
   }
   componentWillMount() {
     if (!firebase.apps.length) {
@@ -103,7 +129,6 @@ class App extends Component {
       });
     }
   }
-
   // Make sure we un-register Firebase observers when the component unmounts.
   componentWillUnmount() {
     this.unregisterAuthObserver();
@@ -112,6 +137,12 @@ class App extends Component {
     return (
       <React.Fragment>
         <NavBar />
+        <button
+          onClick={this.handleAddToHomescreenClick}
+          style={{ display: this.state.showAddToHomeButton ? "block" : "none" }}
+        >
+          Show add to homescreen
+        </button>
         <Switch>
           <Route
             path="/account"
