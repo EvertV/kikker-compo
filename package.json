@@ -9,6 +9,7 @@
     "moment": "^2.23.0",
     "popper.js": "^1.14.3",
     "react": "^16.7.0",
+    "react-add-to-homescreen": "^1.0.0",
     "react-bootstrap": "^0.32.4",
     "react-bootstrap4-modal": "^1.7.0",
     "react-dom": "^16.7.0",

@@ -8,6 +8,7 @@ import firebase from "firebase";
 import SignInScreen from "./components/signInScreen";
 import NavBar from "./components/navBar";
 import { Route, Switch } from "react-router-dom";
+import AddToHomescreen from "react-add-to-homescreen";
 
 const config = {
   apiKey: "AIzaSyA9-EzlXM_COSeuN8R9MZZ34unSgzqYoZw",
@@ -92,6 +93,11 @@ class App extends Component {
     if (arrayCompetitors.length > 0)
       this.setState({ competitors: arrayCompetitors });
   };
+  handleAddToHomescreenClick = () => {
+    alert(`
+  1. Open Share menu
+  2. Tap on "Add to Home Screen" button`);
+  };
   componentDidMount() {
     this.getFromDatabase();
     this.handleSetSignedInState(); // Listen to the Firebase Auth state and set the local state.
@@ -112,6 +118,9 @@ class App extends Component {
     return (
       <React.Fragment>
         <NavBar />
+        <AddToHomescreen
+          onAddToHomescreenClick={this.handleAddToHomescreenClick}
+        />
         <Switch>
           <Route
             path="/account"
