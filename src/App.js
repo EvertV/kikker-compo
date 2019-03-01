@@ -100,16 +100,18 @@ class App extends Component {
     // hide our user interface that shows our A2HS button
     this.setState({ showAddToHomeModal: false });
     // Show the prompt
-    this.state.deferredPrompt.prompt();
-    // Wait for the user to respond to the prompt
-    this.state.deferredPrompt.userChoice.then(choiceResult => {
-      if (choiceResult.outcome === "accepted") {
-        console.log("User accepted the A2HS prompt");
-      } else {
-        console.log("User dismissed the A2HS prompt");
-      }
-      this.setState({ deferredPrompt: null });
-    });
+    if (this.state.deferredPrompt) {
+      this.state.deferredPrompt.prompt();
+      // Wait for the user to respond to the prompt
+      this.state.deferredPrompt.userChoice.then(choiceResult => {
+        if (choiceResult.outcome === "accepted") {
+          console.log("User accepted the A2HS prompt");
+        } else {
+          console.log("User dismissed the A2HS prompt");
+        }
+        this.setState({ deferredPrompt: null });
+      });
+    }
   };
   handleCancelAddToHomeModal = () => {
     this.setState({ showAddToHomeModal: false });
@@ -117,13 +119,6 @@ class App extends Component {
   componentDidMount() {
     this.getFromDatabase();
     this.handleSetSignedInState(); // Listen to the Firebase Auth state and set the local state.
-  }
-  componentWillMount() {
-    if (!firebase.apps.length) {
-      firebase.initializeApp({
-        databaseURL: "https://kikker-compo.firebaseio.com/"
-      });
-    }
     window.addEventListener("beforeinstallprompt", e => {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       e.preventDefault();
@@ -133,6 +128,13 @@ class App extends Component {
       // Update UI notify the user they can add to home screen
       this.setState({ showAddToHomeModal: true });
     });
+  }
+  componentWillMount() {
+    if (!firebase.apps.length) {
+      firebase.initializeApp({
+        databaseURL: "https://kikker-compo.firebaseio.com/"
+      });
+    }
   }
 
   // Make sure we un-register Firebase observers when the component unmounts.
@@ -144,28 +146,27 @@ class App extends Component {
       <React.Fragment>
         <NavBar />
 
-        <Modal
-          visible={this.state.showAddToHomeModal}
-          onClickBackdrop={this.handleCancelAddToHomeModal}
-        >
+        <Modal visible={this.state.showAddToHomeModal}>
           <div className="modal-header">
-            <h5 className="modal-title">Toevoegen op uw homescreen</h5>
+            <h5 className="modal-title">Toevoegen op je homescreen</h5>
           </div>
-          <div className="card-header">Gelijk een legit app a'a</div>
           <div className="card-body">
-            <p>GEWOON DOEN</p>
+            <p>
+              Voeg Kikkercompo toe op je homescreen voor makkelijke toegang tot
+              de app.
+            </p>
             <button
               onClick={this.handleAddToHomescreenClick}
               className="btn btn-primary"
             >
-              JA DA WIL IK
+              Toevoegen op m'n homescreen
             </button>
           </div>
           <div className="modal-footer" style={{ display: "inline-block" }}>
             <button
               type="submit"
-              className="btn btn-secondary float-right"
               onClick={this.handleCancelAddToHomeModal}
+              className="btn btn-secondary float-right"
             >
               <Octicon name="x" />
               &nbsp;Sluit
