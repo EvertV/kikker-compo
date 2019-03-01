@@ -8,6 +8,8 @@ import firebase from "firebase";
 import SignInScreen from "./components/signInScreen";
 import NavBar from "./components/navBar";
 import { Route, Switch } from "react-router-dom";
+import Octicon from "react-octicon";
+import Modal from "react-bootstrap4-modal";
 
 const config = {
   apiKey: "AIzaSyA9-EzlXM_COSeuN8R9MZZ34unSgzqYoZw",
@@ -38,7 +40,7 @@ class App extends Component {
       }
     ],
     deferredPrompt: null,
-    showAddToHomeButton: false
+    showAddToHomeModal: false
   };
   writeToDatabase = () => {
     this.state.competitors.forEach(competitor => {
@@ -96,7 +98,7 @@ class App extends Component {
   };
   handleAddToHomescreenClick = () => {
     // hide our user interface that shows our A2HS button
-    this.setState({ showAddToHomeButton: false });
+    this.setState({ showAddToHomeModal: false });
     // Show the prompt
     this.state.deferredPrompt.prompt();
     // Wait for the user to respond to the prompt
@@ -109,18 +111,12 @@ class App extends Component {
       this.setState({ deferredPrompt: null });
     });
   };
+  handleCancelAddToHomeModal = () => {
+    this.setState({ showAddToHomeModal: false });
+  };
   componentDidMount() {
     this.getFromDatabase();
     this.handleSetSignedInState(); // Listen to the Firebase Auth state and set the local state.
-
-    window.addEventListener("beforeinstallprompt", e => {
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      this.setState({ deferredPrompt: e });
-      // Update UI notify the user they can add to home screen
-      this.setState({ showAddToHomeButton: true });
-    });
   }
   componentWillMount() {
     if (!firebase.apps.length) {
@@ -128,7 +124,17 @@ class App extends Component {
         databaseURL: "https://kikker-compo.firebaseio.com/"
       });
     }
+    window.addEventListener("beforeinstallprompt", e => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      this.setState({ deferredPrompt: e });
+
+      // Update UI notify the user they can add to home screen
+      this.setState({ showAddToHomeModal: true });
+    });
   }
+
   // Make sure we un-register Firebase observers when the component unmounts.
   componentWillUnmount() {
     this.unregisterAuthObserver();
@@ -137,12 +143,35 @@ class App extends Component {
     return (
       <React.Fragment>
         <NavBar />
-        <button
-          onClick={this.handleAddToHomescreenClick}
-          style={{ display: this.state.showAddToHomeButton ? "block" : "none" }}
+
+        <Modal
+          visible={this.state.showAddToHomeModal}
+          onClickBackdrop={this.handleCancelAddToHomeModal}
         >
-          Show add to homescreen
-        </button>
+          <div className="modal-header">
+            <h5 className="modal-title">Toevoegen op uw homescreen</h5>
+          </div>
+          <div className="card-header">Gelijk een legit app a'a</div>
+          <div className="card-body">
+            <p>GEWOON DOEN</p>
+            <button
+              onClick={this.handleAddToHomescreenClick}
+              className="btn btn-primary"
+            >
+              JA DA WIL IK
+            </button>
+          </div>
+          <div className="modal-footer" style={{ display: "inline-block" }}>
+            <button
+              type="submit"
+              className="btn btn-secondary float-right"
+              onClick={this.handleCancelAddToHomeModal}
+            >
+              <Octicon name="x" />
+              &nbsp;Sluit
+            </button>
+          </div>
+        </Modal>
         <Switch>
           <Route
             path="/account"
